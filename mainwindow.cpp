@@ -17,19 +17,14 @@ MainWindow::~MainWindow()
 }
 
 
-
-
-
 void MainWindow::on_pushButton_clicked()
 {
-    int i = ui->tableWidget->rowCount();
-    ui->tableWidget->setRowCount(i+1);
+
 }
 
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    int i = ui->tableWidget->rowCount();
-    ui->tableWidget->setRowCount(i-1);
+
 }
 
