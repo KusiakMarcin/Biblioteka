@@ -17,7 +17,7 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>1419</x>
+      <x>1429</x>
       <y>309</y>
       <width>481</width>
       <height>721</height>
@@ -25,15 +25,90 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QListView" name="listView"/>
+      <widget class="QTableWidget" name="tableWidget_3">
+       <column>
+        <property name="text">
+         <string>ID Klient</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ID Ksiazka</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Data Wydania </string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Data Zwrotu</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>1430</x>
+      <y>-10</y>
+      <width>481</width>
+      <height>321</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="GridLayout">
+     <item row="2" column="2">
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="text">
+        <string>Usun Ksiazke</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QPushButton" name="pushButton_6">
+       <property name="text">
+        <string>Usun Wypozyczenie</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Dodaj Klietna</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Usun Klienta</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>Dodaj Ksiazke</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="pushButton_5">
+       <property name="text">
+        <string>Dodaj Wypozyczenie</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>10</y>
+      <x>0</x>
+      <y>9</y>
       <width>1421</width>
       <height>1021</height>
      </rect>
@@ -60,7 +135,7 @@
         <number>0</number>
        </attribute>
        <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>200</number>
+        <number>100</number>
        </attribute>
        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
         <bool>false</bool>
@@ -89,6 +164,21 @@
        <attribute name="verticalHeaderStretchLastSection">
         <bool>false</bool>
        </attribute>
+       <row>
+        <property name="text">
+         <string>New Row</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>New Row</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>New Row</string>
+        </property>
+       </row>
        <column>
         <property name="text">
          <string>ID</string>
@@ -126,122 +216,46 @@
        </column>
       </widget>
      </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="formLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>1420</x>
-      <y>10</y>
-      <width>481</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Imie</string>
+     <item>
+      <widget class="QTableWidget" name="tableWidget_2">
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOn</enum>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Nazwisko</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_3"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Numerkarty </string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_2"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Telefon</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEdit_4"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>E-mail</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="lineEdit_5"/>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Adres</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="lineEdit_6"/>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>1420</x>
-      <y>240</y>
-      <width>481</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="GridLayout">
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="text">
-        <string>Usun Element</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Dodaj Element</string>
-       </property>
+       <column>
+        <property name="text">
+         <string>ID</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tytul</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Autor</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Ilosc</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Rok Wydania</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Gatunek</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Wypozyczenia</string>
+        </property>
+       </column>
       </widget>
      </item>
     </layout>
@@ -282,7 +296,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="appointment-new"/>
+    <iconset theme="appointment-new">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Wyswietl</string>

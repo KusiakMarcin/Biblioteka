@@ -14,6 +14,7 @@ private:
 
 public:
     Clients(int id,string email,string imie,string nazwisko,string adres,int numerkarty);
+    //Void PopulateTable();
     ~Clients();
 
 };
