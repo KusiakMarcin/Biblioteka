@@ -15,7 +15,10 @@ private:
 
 public:
     Books(int id, std::string, int autor_id,int ilosc_egzemplarzy,int rok_wydania,int gatunek_id,int liczba_wypozyczen);
-    void DeleteField();
+    //DeleteField();
+    //DeleteElement
+    //CreateElement
+    //CreateField();
     ~Books();
 
 

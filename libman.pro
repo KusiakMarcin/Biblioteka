@@ -11,7 +11,9 @@ CONFIG += c++17
 SOURCES += \
     Forms/addclientelement.cpp \
     Source/Books.cpp \
+    Source/ClientTableModel.cpp \
     Source/Clients.cpp \
+    Source/Rentals.cpp \
     Source/sqlite3.c \
     main.cpp \
     mainwindow.cpp
@@ -21,6 +23,7 @@ SOURCES += \
 HEADERS += \
     Forms/addclientelement.h \
     Headers/Books.h \
+    Headers/ClientTableModel.h \
     Headers/Clients.h \
     Headers/Rentals.h \
     Headers/sqlite3.h \

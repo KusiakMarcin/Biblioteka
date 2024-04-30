@@ -3,9 +3,11 @@
 #include <iostream>
 
 
+using namespace std;
+
 Books::Books(int id, std::string tytul, int autor_id,int ilosc_egzemplarzy,int rok_wydania,int gatunek_id,int liczba_wypozyczen){
 
-    BookID = id;
+    int BookID = id;
     Tytul = tytul;
     AutorID = autor_id;
     IloscEgzemplarzy = ilosc_egzemplarzy;
