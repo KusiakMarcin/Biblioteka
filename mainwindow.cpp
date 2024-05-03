@@ -7,8 +7,13 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ClientTableModel Clients;
-    ui->Clients->setModel(&Clients);
+    if(ui->actiona->isChecked()){
+        QHBoxLayout *layout = ui->horizontalLayout;
+        QPushButton *button1 = new QPushButton("ione");
+        layout->addWidget(button1);
+
+    }
+
 
 
 }
@@ -20,14 +25,4 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked()
-{
-
-}
-
-
-void MainWindow::on_pushButton_2_clicked()
-{
-
-}
 
