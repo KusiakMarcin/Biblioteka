@@ -7,22 +7,28 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    if(ui->actiona->isChecked()){
-        QHBoxLayout *layout = ui->horizontalLayout;
-        QPushButton *button1 = new QPushButton("ione");
-        layout->addWidget(button1);
-
-    }
-
+    connect(ui->addTable,SIGNAL(toggled(bool)),this,SLOT(addTable()));
 
 
 }
 
+int MainWindow::addClientTable(){
+    QHBoxLayout *layout = ui->horizontalLayout;
+    ClientTableModel *Model = new ClientTableModel;
+    QTableView *Table = new QTableView;
+    Table->setModel(Model);
+    if(ui->addTable->isChecked())layout->addWidget(Table);
+
+
+}
+int MainWindow::addBooksTable(){
+
+
+}
 MainWindow::~MainWindow()
 {
     delete ui;
 
 }
-
 
 

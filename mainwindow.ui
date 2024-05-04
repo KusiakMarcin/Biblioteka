@@ -129,12 +129,13 @@
     <property name="title">
      <string>Klienci</string>
     </property>
-    <addaction name="actiona"/>
+    <addaction name="addTable"/>
    </widget>
    <widget class="QMenu" name="menuKsiazki">
     <property name="title">
      <string>Ksiazki</string>
     </property>
+    <addaction name="actionWyswietl"/>
    </widget>
    <widget class="QMenu" name="menuWypozyczenia">
     <property name="title">
@@ -146,14 +147,22 @@
    <addaction name="menuWypozyczenia"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actiona">
+  <action name="addTable">
    <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="icon">
     <iconset theme="appointment-new">
      <normaloff>.</normaloff>.</iconset>
    </property>
+   <property name="text">
+    <string>Wyswietl</string>
+   </property>
+  </action>
+  <action name="actionWyswietl">
    <property name="text">
     <string>Wyswietl</string>
    </property>

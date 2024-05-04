@@ -16,7 +16,9 @@ public:
     ~MainWindow();
 
 
-private slots:
+public slots:
+    int addClientTable();
+    int addBooksTable();
 
 private:
     Ui::MainWindow *ui;
