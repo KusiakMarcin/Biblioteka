@@ -17,8 +17,12 @@ public:
 
 
 public slots:
-    int addClientTable();
-    int addBooksTable();
+    int isClientTable();
+    //int addClientTable();
+    //int addBooksTable();
+
+private slots:
+    void on_addclient_clicked();
 
 private:
     Ui::MainWindow *ui;

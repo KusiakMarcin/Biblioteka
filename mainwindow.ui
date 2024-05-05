@@ -75,14 +75,14 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="addclient">
        <property name="text">
         <string>Dodaj Klietna</string>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="removeclient">
        <property name="text">
         <string>Usun Klienta</string>
        </property>
@@ -122,7 +122,7 @@
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuKlienci">
@@ -155,8 +155,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="appointment-new">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="appointment-new"/>
    </property>
    <property name="text">
     <string>Wyswietl</string>

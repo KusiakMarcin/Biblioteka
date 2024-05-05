@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Headers/ClientTableModel.h"
+#include "addclientelement.h"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -56,4 +57,12 @@ MainWindow::~MainWindow(){
 
 }
 
+
+
+void MainWindow::on_addclient_clicked(){
+
+    addclientelement *dialog = new addclientelement(this);
+    dialog->show();
+
+}
 
