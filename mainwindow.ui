@@ -129,7 +129,7 @@
     <property name="title">
      <string>Klienci</string>
     </property>
-    <addaction name="addTable"/>
+    <addaction name="IsCLientVisible"/>
    </widget>
    <widget class="QMenu" name="menuKsiazki">
     <property name="title">
@@ -147,7 +147,7 @@
    <addaction name="menuWypozyczenia"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="addTable">
+  <action name="IsCLientVisible">
    <property name="checkable">
     <bool>true</bool>
    </property>

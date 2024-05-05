@@ -4,6 +4,7 @@
 ClientTableModel::ClientTableModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
+
 }
 
 int ClientTableModel::rowCount(const QModelIndex &parent)const{
