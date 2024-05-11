@@ -2,10 +2,7 @@
 #define ADDCLIENTELEMENT_H
 
 #include <QDialog>
-
-namespace Ui {
-class addclientelement;
-}
+namespace Ui {class addclientelement;}
 
 class addclientelement : public QDialog
 {
