@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include "Headers/sqlite3.h"
+#include "Headers/database.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -8,19 +10,19 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.setWindowState(Qt::WindowMaximized);
     w.show();
- /*   int rc;
-    rc = sqlite3_initialize();
-    if ( rc != SQLITE_OK )
-   {
-        fprintf(stderr, "Can't initialize sqlite: %s\n", sqlite3_errmsg(Db));
-    }
-    int dbc = sqlite3_open("Data.db", &Db);
-    if (dbc != SQLITE_OK) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(Db));
-    }
-    else {
+    database db;
+    if(db.initDatabase())
+    {
         fprintf(stdout, "Opened database successfully\n");
-    }*/
+    }
+    else
+    {
+        fprintf(stderr, "Can't open database");
+    }
+
+
+
+
 
 
     return a.exec();

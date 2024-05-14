@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "Headers/sqlite3.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -15,15 +14,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    sqlite3 *Db;
 
+
+public slots:
+    int isClientTable();
+    //int addClientTable();
+    //int addBooksTable();
 
 private slots:
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_3_clicked();
+    void on_addclient_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -75,14 +75,14 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="addclient">
        <property name="text">
         <string>Dodaj Klietna</string>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="removeclient">
        <property name="text">
         <string>Usun Klienta</string>
        </property>
@@ -113,11 +113,7 @@
       <height>1021</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QTableView" name="Clients"/>
-     </item>
-    </layout>
+    <layout class="QHBoxLayout" name="horizontalLayout"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -126,19 +122,20 @@
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuKlienci">
     <property name="title">
      <string>Klienci</string>
     </property>
-    <addaction name="actiona"/>
+    <addaction name="IsCLientVisible"/>
    </widget>
    <widget class="QMenu" name="menuKsiazki">
     <property name="title">
      <string>Ksiazki</string>
     </property>
+    <addaction name="actionWyswietl"/>
    </widget>
    <widget class="QMenu" name="menuWypozyczenia">
     <property name="title">
@@ -150,14 +147,21 @@
    <addaction name="menuWypozyczenia"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actiona">
+  <action name="IsCLientVisible">
    <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon">
-    <iconset theme="appointment-new">
-     <normaloff>.</normaloff>.</iconset>
+   <property name="enabled">
+    <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset theme="appointment-new"/>
+   </property>
+   <property name="text">
+    <string>Wyswietl</string>
+   </property>
+  </action>
+  <action name="actionWyswietl">
    <property name="text">
     <string>Wyswietl</string>
    </property>

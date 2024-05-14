@@ -6,9 +6,9 @@ class Clients{
 
 private:
     int ClientID;
-    string Email;
     string Imie;
     string Nazwisko;
+    string Email;
     string Adres;
     int NumerKarty;
 
