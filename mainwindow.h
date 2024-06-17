@@ -18,6 +18,7 @@ public:
 
 public slots:
     int isClientTable();
+    int isBooksTable();
     //int addClientTable();
     //int addBooksTable();
 
