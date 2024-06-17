@@ -40,19 +40,15 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
         case 0:
             return QString("ID");
         case 1:
-
-            return QString("Tytuł");
+            return QString("Imie");
         case 2:
-            return QString("Autor");
+            return QString("Nazwisko");
         case 3:
-            return QString("Rok Wydania");
+            return QString("Email");
         case 4:
-            return QString("Gatunek");
+            return QString("Adres");
         case 5:
-            return QString("Liczba Wypożyczeń");
-        case 6:
-            return QString("Liczba Egzemplarzy");
-
+            return QString("Numer Karty");
         }
     }
     return QVariant();

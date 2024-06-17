@@ -1,7 +1,10 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 #include "sqlite3.h"
+#include <stdlib.h>
+#include <QDebug>
 #include <QString>
+#include <unistd.h>
 
 //bool initDatabase(sqlite3 *Db);
 //int callback(void* data, int argc, char** argv, char** azColName);

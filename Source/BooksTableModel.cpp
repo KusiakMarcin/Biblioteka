@@ -13,7 +13,7 @@ int BooksTableModel::rowCount(const QModelIndex &parent)const{
 }
 
 int BooksTableModel::columnCount(const QModelIndex &parent)const{
-    return 6;
+    return 7;
 }
 
 QVariant BooksTableModel::data(const QModelIndex &index, int role)const{
@@ -39,17 +39,23 @@ QVariant BooksTableModel::headerData(int section, Qt::Orientation orientation, i
         case 0:
             return QString("ID");
         case 1:
-            return QString("Imie");
+
+            return QString("Tytuł");
         case 2:
-            return QString("Nazwisko");
+            return QString("Autor");
         case 3:
-            return QString("Email");
+            return QString("Rok Wydania");
         case 4:
-            return QString("Adres");
+            return QString("Gatunek");
         case 5:
-            return QString("Numer Karty");
+            return QString("Liczba Wypożyczeń");
+        case 6:
+            return QString("Liczba Egzemplarzy");
+
         }
     }
+
+
     return QVariant();
 }
 

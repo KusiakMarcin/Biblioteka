@@ -1,7 +1,7 @@
 #include "Headers/database.h"
 #include "Headers/sqlite3.h"
 #include <stdio.h>
-#include <fstream>
+
 /*
 
 int callback(void* data, int argc, char** argv, char** azColName)
@@ -22,20 +22,23 @@ database::database() {}
 
 bool database::initDatabase(){
     sqlite3 *Db;
-    char *zErrMsg = 0;
+    char buffer[PATH_MAX];
+    getcwd(buffer, sizeof(buffer));
+    qDebug()<<buffer;
     int rc;
     /*std::ifstream ifile(".\\databases\\data.db");
     if (!ifile) {
         fprintf(stderr, "Can't find the database file: ./databases/data.db\n");
         return false;
     }*/
-    rc = sqlite3_open(":/database/data.db", &Db);
+    rc = sqlite3_open("data.db", &Db);
     if(rc){
-        fprintf(stderr, "Can't open database:  %s\n", sqlite3_errmsg(Db));
+        qDebug() << "Can't open database"<<sqlite3_errmsg(Db);
+        //fprintf(stderr, "Can't open database:  %s\n", sqlite3_errmsg(Db));
         return false;
         }
     else{
-        fprintf(stderr, "Opened database succesfully\n");
+        qDebug() <<"Opened database succesfully\n";
         return true;
     }
 }
