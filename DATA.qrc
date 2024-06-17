@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>Models/Rentals.qml</file>
+	<file>Databases/data.db</file>
     </qresource>
 </RCC>

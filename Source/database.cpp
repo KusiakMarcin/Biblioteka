@@ -29,7 +29,7 @@ bool database::initDatabase(){
         fprintf(stderr, "Can't find the database file: ./databases/data.db\n");
         return false;
     }*/
-    rc = sqlite3_open("C:\\Users\\adria\\Desktop\\Biblioteka-ui_databasebranch\\databases\\data.db", &Db);
+    rc = sqlite3_open(":/database/data.db", &Db);
     if(rc){
         fprintf(stderr, "Can't open database:  %s\n", sqlite3_errmsg(Db));
         return false;

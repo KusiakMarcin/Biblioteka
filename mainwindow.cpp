@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include "Headers/ClientTableModel.h"
 #include "Headers/BooksTableModel.h"
-
 #include "addclientelement.h"
 #include <QDebug>
 
