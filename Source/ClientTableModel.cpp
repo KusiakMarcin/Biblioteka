@@ -9,7 +9,7 @@ ClientTableModel::ClientTableModel(QObject *parent)
 
 int ClientTableModel::rowCount(const QModelIndex &parent)const{
 
-    return 0;
+    return 1;
 }
 
 int ClientTableModel::columnCount(const QModelIndex &parent)const{
@@ -39,15 +39,17 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
         case 0:
             return QString("ID");
         case 1:
-            return QString("Imie");
+            return QString("Tytuł");
         case 2:
-            return QString("Nazwisko");
+            return QString("Autor");
         case 3:
-            return QString("Email");
+            return QString("Rok Wydania");
         case 4:
-            return QString("Adres");
+            return QString("Gatunek");
         case 5:
-            return QString("Numer Karty");
+            return QString("Liczba Wypożyczeń");
+        case 6:
+            return QString("Liczba Egzemplarzy");
         }
     }
     return QVariant();

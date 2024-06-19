@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Headers/ClientTableModel.h"
+#include "Headers/BooksTableModel.h"
 #include "addclientelement.h"
 #include <QDebug>
 
@@ -9,49 +10,35 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->IsCLientVisible,SIGNAL(toggled(bool)),this,SLOT(isClientTable()));
-    qDebug() << this->children();
+    isClientTable();
+    isBooksTable();
+
 }
 
 int MainWindow::isClientTable(){
 
-    if(ui->IsCLientVisible->isChecked()){
-        QHBoxLayout *layout = ui->horizontalLayout;
-        ClientTableModel *Model = new ClientTableModel;
-        QTableView *ClientTable = new QTableView(this);
-        ClientTable->setModel(Model);
-        layout->addWidget(ClientTable);
-        qDebug() << this->children();
-        qDebug() << layout->children();
-        }
-    else{
-        ;
-    }
-    }
 
-//int MainWindow::addClientTable(){
-//    QHBoxLayout *layout = ui->horizontalLayout;
-//    ClientTableModel *Model = new ClientTableModel;
-//    QTableView *Table = new QTableView;
-//    Table->setModel(Model);
-//    if(ui->IsCLientVisible->isChecked())layout->addWidget(Table);
+    QHBoxLayout *layout = ui->horizontalLayout;
+    ClientTableModel *Model = new ClientTableModel;
+    QTableView *ClientTable = new QTableView(this);
+    ClientTable->setModel(Model);
+    layout->addWidget(ClientTable);
+
+}
+
+int MainWindow::isBooksTable(){
 
 
-//}
+    QHBoxLayout *layout = ui->horizontalLayout;
+    BooksTableModel *Model = new BooksTableModel;
+    QTableView *BooksTable = new QTableView(this);
+    BooksTable->setModel(Model);
+    layout->addWidget(BooksTable);
 
-//int MainWindow::removeClientTable(){
-//    QHBoxLayout *layout = ui->horizontalLayout;
-//    ClientTableModel *Model = new ClientTableModel;
-//    QTableView *Table = new QTableView;
-//    Table->setModel(Model);
-//    if(ui->IsCLientVisible->isChecked())layout->addWidget(Table);
-
-
-//}
-//int MainWindow::addBooksTable(){
+}
 
 
-//};
+
 MainWindow::~MainWindow(){
     delete ui;
 

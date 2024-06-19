@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     Source/Books.cpp \
+    Source/BooksTableModel.cpp \
     Source/ClientTableModel.cpp \
     Source/Clients.cpp \
     Source/Rentals.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     Headers/Books.h \
+    Headers/BooksTableModel.h \
     Headers/ClientTableModel.h \
     Headers/Clients.h \
     Headers/Rentals.h \

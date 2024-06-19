@@ -3,13 +3,14 @@
 #include "sqlite3.h"
 #include <QString>
 
-//bool initDatabase(sqlite3 *Db);
-//int callback(void* data, int argc, char** argv, char** azColName);
 class database{
-    //static int callback(void* data, int argc, char** argv, char** azColName);
 public:
+    sqlite3 *Db;
     database();
+    ~database();
     bool initDatabase();
+    bool addNewClient(const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
+
 };
 
 //const char *databaseMain = "databases/data.db";

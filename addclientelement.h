@@ -12,6 +12,9 @@ public:
     explicit addclientelement(QWidget *parent = nullptr);
     ~addclientelement();
 
+private slots:
+    void on_pushButton_dodajKlienta_2_clicked();
+
 private:
     Ui::addclientelement *ui;
 };
