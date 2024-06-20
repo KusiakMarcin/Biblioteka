@@ -1,5 +1,7 @@
 #include "Headers/ClientTableModel.h"
 #include "Headers/Clients.h"
+#include "Source/Clients.cpp"
+#include <QDebug>
 
 ClientTableModel::ClientTableModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -9,7 +11,7 @@ ClientTableModel::ClientTableModel(QObject *parent)
 
 int ClientTableModel::rowCount(const QModelIndex &parent)const{
 
-    return 1;
+    return datalist.size();
 
 }
 
@@ -18,17 +20,11 @@ int ClientTableModel::columnCount(const QModelIndex &parent)const{
 }
 
 QVariant ClientTableModel::data(const QModelIndex &index, int role)const{
-
-    if (role == Qt::DisplayRole){
-        switch(index.column()){
-        case 0: return QString("q");
-        case 1: return QString("w");
-        case 2: return QString("e");
-        case 3: return QString("r");
-        case 4: return QString("t");
-        case 5: return QString("y");
-
-        }
+    Clients Item(123,"dasd","dasd","dasd","dasd",1234);
+    QVector<QString> *gg = Item.convertQStringList();
+    qDebug()<< gg;
+    if (role == Qt::DisplayRole) {
+        return datalist.at(index.row()).at(index.column());
     }
 
     return QVariant();
@@ -54,6 +50,12 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
     return QVariant();
 }
 
+void ClientTableModel::setData(){
+
+    QVector<QString> item;
+    datalist.append(item);
+
+}
 void ClientTableModel::addElement(){
 
 

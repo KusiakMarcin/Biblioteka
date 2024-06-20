@@ -13,7 +13,20 @@ Clients:: Clients(int id,string email,string imie,string nazwisko,string adres,i
     NumerKarty = numerkarty;
 
 }
+QVector<QString>* Clients::convertQStringList(){
+    QVector<QString> *item = new QVector<QString>;
+    item->append({
+        QString(ClientID),
+        QString::fromStdString(Imie),
+        QString::fromStdString(Nazwisko),
+        QString::fromStdString(Email),
+        QString::fromStdString(Adres),
+        QString(NumerKarty)
+    });
 
+    return item;
+
+}
 //Clients::PopulateTable(){
 
 

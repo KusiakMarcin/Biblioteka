@@ -1,7 +1,10 @@
 #ifndef CLIENTS_H
 #define CLIENTS_H
 #include <iostream>
+#include <QString>
+#include <QVector>
 using namespace std;
+
 class Clients{
 
 private:
@@ -12,13 +15,14 @@ private:
     string Adres;
     int NumerKarty;
 
+
 public:
     Clients(int id,string email,string imie,string nazwisko,string adres,int numerkarty);
-    //Void PopulateTable();
+    //PopulateTable();
+    QVector<QString> *convertQStringList();
     //
     //
-    //
-    ~Clients();
+
 
 };
 
