@@ -17,11 +17,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 int MainWindow::isClientTable(){
 
-
+    database Db;
+    Db.initDatabase();
     QHBoxLayout *layout = ui->horizontalLayout;
     ClientTableModel *Model = new ClientTableModel;
     QTableView *ClientTable = new QTableView(this);
+    Model->setDataList(&Db);
     ClientTable->setModel(Model);
+
     layout->addWidget(ClientTable);
 
 }

@@ -1,8 +1,11 @@
 #include "Headers/database.h"
 #include "Headers/sqlite3.h"
 #include <stdio.h>
+#include <QDebug>
 
-database::database() {}
+database::database() {
+
+}
 
 database::~database() {
     if(Db){
@@ -12,11 +15,11 @@ database::~database() {
 
 bool database::initDatabase(){
 
-    sqlite3 *Db;
+
     char *zErrMsg = 0;
     int rc;
 
-    rc = sqlite3_open("C:\\Users\\adria\\Desktop\\Biblioteka-ui_databasebranch\\databases\\data.db", &Db);
+    rc = sqlite3_open("data.db", &Db);
     if(rc){
         fprintf(stderr, "Can't open database:  %s\n", sqlite3_errmsg(Db));
         return false;
@@ -57,3 +60,6 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
     sqlite3_finalize(stmt);
     return true;
 }
+
+
+

@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-Clients:: Clients(int id,string email,string imie,string nazwisko,string adres,int numerkarty){
+Clients:: Clients(int id,QString email,QString imie,QString nazwisko,QString adres,int numerkarty){
 
     ClientID = id;
     Email = email;

@@ -1,5 +1,7 @@
 #include "Headers/ClientTableModel.h"
 #include "Headers/Clients.h"
+#include <QDebug>
+#include "Headers/sqlite3.h"
 
 ClientTableModel::ClientTableModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -9,7 +11,7 @@ ClientTableModel::ClientTableModel(QObject *parent)
 
 int ClientTableModel::rowCount(const QModelIndex &parent)const{
 
-    return 1;
+    return datalist.size();
 }
 
 int ClientTableModel::columnCount(const QModelIndex &parent)const{
@@ -18,16 +20,9 @@ int ClientTableModel::columnCount(const QModelIndex &parent)const{
 
 QVariant ClientTableModel::data(const QModelIndex &index, int role)const{
 
-    if (role == Qt::DisplayRole){
-        switch(index.column()){
-        case 0: return QString("q");
-        case 1: return QString("w");
-        case 2: return QString("e");
-        case 3: return QString("r");
-        case 4: return QString("t");
-        case 5: return QString("y");
 
-        }
+    if (role == Qt::DisplayRole){
+        return datalist.at(index.row()).at(index.column());
     }
 
     return QVariant();
@@ -54,7 +49,29 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
     }
     return QVariant();
 }
+void ClientTableModel::setDataList(database *Db){
 
+    const char* sql = "SELECT * FROM Klienci;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(Db->Db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        qDebug()<< sqlite3_errmsg(Db->Db);
+
+    }
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
+        QVector<QString>tmp;
+        tmp.append(QString(sqlite3_column_int(stmt,0)));
+        tmp.append((char*)sqlite3_column_text(stmt,1));
+        tmp.append((char*)sqlite3_column_text(stmt,2));
+        tmp.append((char*)sqlite3_column_text(stmt,3));
+        tmp.append((char*)sqlite3_column_text(stmt,4));
+        tmp.append(QString(sqlite3_column_int(stmt,5)));
+        datalist.append(tmp);
+    }
+    qDebug()<<".count():"<<datalist.count();
+
+
+}
 void ClientTableModel::addElement(){
 
 

@@ -45,4 +45,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     DATA.qrc
 
+DISTFILES += \
+    databases/data.db \
+    databases/data.db-journal
+
 

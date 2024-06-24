@@ -2,7 +2,6 @@
 #define RENTALS_H
 #include <iostream>
 #include "Books.h"
-#include "Clients.h"
 
 
 class Rentals{
