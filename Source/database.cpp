@@ -103,7 +103,6 @@ bool database::initDatabase(){
         if (rc != SQLITE_OK) {
             fprintf(stderr, "SQL error: %s\n", zErrMsg);
             sqlite3_free(zErrMsg);
-            sqlite3_close(Db);
             return false;
         } else {
             fprintf(stdout, "Tables created successfully\n");
