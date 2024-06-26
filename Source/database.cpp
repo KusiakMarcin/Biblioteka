@@ -16,7 +16,8 @@ database::~database() {
 bool database::initDatabase(){
 
 
-    sqlite3 *Db;
+    //sqlite3 *Db; to jest zadeklarowane w database.h, w ten sposob przeciazasz(chyba) i korzystasz ze strumienia w funkcji a ten zadeklarowany w obiekcie zostaje
+    //              niezainicjalizowany i nie da sie z niego korzystac
     const char *filename = "data.db";
     char *zErrMsg = 0;
     int rc;

@@ -53,19 +53,18 @@ void ClientTableModel::setDataList(database *Db){
 
     const char* sql = "SELECT * FROM Klienci;";
     sqlite3_stmt* stmt;
-    int rc = sqlite3_prepare_v2(Db->Db, sql, -1, &stmt, NULL);
+    int rc = sqlite3_prepare_v2(Db->Db,sql,-1,&stmt,NULL);
     if (rc != SQLITE_OK) {
         qDebug()<< sqlite3_errmsg(Db->Db);
-
     }
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
         QVector<QString>tmp;
-        tmp.append(QString(sqlite3_column_int(stmt,0)));
+        tmp.append(QString((int)sqlite3_column_int(stmt,0)));
         tmp.append((char*)sqlite3_column_text(stmt,1));
         tmp.append((char*)sqlite3_column_text(stmt,2));
         tmp.append((char*)sqlite3_column_text(stmt,3));
         tmp.append((char*)sqlite3_column_text(stmt,4));
-        tmp.append(QString(sqlite3_column_int(stmt,5)));
+        tmp.append(QString((int)sqlite3_column_int(stmt,5)));
         datalist.append(tmp);
     }
     qDebug()<<".count():"<<datalist.count();
