@@ -1,0 +1,11 @@
+kwerendy do wyświetlania w aplikacji:
+
+//tabela z danymi klientów
+SELECT * FROM Klienci;
+
+//widok z tabelą książek
+SELECT * FROM W_Ksiazki;
+
+//widok wypożyczen
+
+//polecenie do wpisania wypożyczenia książki
