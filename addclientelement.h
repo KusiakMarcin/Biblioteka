@@ -1,6 +1,6 @@
 #ifndef ADDCLIENTELEMENT_H
 #define ADDCLIENTELEMENT_H
-
+#include "Headers/database.h"
 #include <QDialog>
 namespace Ui {class addclientelement;}
 
@@ -13,7 +13,7 @@ public:
     ~addclientelement();
 
 private slots:
-    void on_pushButton_dodajKlienta_2_clicked();
+    void on_pushButton_dodajKlienta_2_clicked(database *Db);
 
 private:
     Ui::addclientelement *ui;

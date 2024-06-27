@@ -16,7 +16,9 @@ SOURCES += \
     Source/Rentals.cpp \
     Source/database.cpp \
     Source/sqlite3.c \
+    addbookelement.cpp \
     addclientelement.cpp \
+    createrental.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -30,11 +32,15 @@ HEADERS += \
     Headers/Rentals.h \
     Headers/database.h \
     Headers/sqlite3.h \
+    addbookelement.h \
     addclientelement.h \
+    createrental.h \
     mainwindow.h
 
 FORMS += \
+    addbookelement.ui \
     addclientelement.ui \
+    createrental.ui \
     mainwindow.ui
 
 # Default rules for deployment.
