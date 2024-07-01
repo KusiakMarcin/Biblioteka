@@ -2,6 +2,7 @@
 #define DATABASE_H
 #include "sqlite3.h"
 #include <QString>
+#include <QVector>
 
 class database{
 public:
@@ -10,6 +11,7 @@ public:
     ~database();
     bool initDatabase();
     bool addNewClient(const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
+
 
 };
 

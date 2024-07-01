@@ -17,38 +17,13 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>1429</x>
-      <y>309</y>
+      <x>1430</x>
+      <y>320</y>
       <width>481</width>
       <height>721</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QTableWidget" name="tableWidget_3">
-       <column>
-        <property name="text">
-         <string>ID Klient</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>ID Ksiazka</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Data Wydania </string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Data Zwrotu</string>
-        </property>
-       </column>
-      </widget>
-     </item>
-    </layout>
+    <layout class="QVBoxLayout" name="verticalLayout"/>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
@@ -89,7 +64,7 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="addbook">
        <property name="text">
         <string>Dodaj Ksiazke</string>
        </property>
@@ -107,8 +82,8 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>9</y>
+      <x>10</x>
+      <y>10</y>
       <width>1421</width>
       <height>1021</height>
      </rect>
@@ -122,7 +97,7 @@
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuKlienci">
@@ -155,7 +130,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="appointment-new"/>
+    <iconset theme="appointment-new">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Wyswietl</string>

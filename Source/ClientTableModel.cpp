@@ -1,33 +1,29 @@
 #include "Headers/ClientTableModel.h"
 #include "Headers/Clients.h"
+#include <QDebug>
+#include "Headers/sqlite3.h"
 
-ClientTableModel::ClientTableModel(QObject *parent)
+ClientTableModel::ClientTableModel(database *Db, QObject *parent)
     : QAbstractTableModel(parent)
 {
-
+    this->setDataList(Db);
 }
 
 int ClientTableModel::rowCount(const QModelIndex &parent)const{
 
-    return 1;
+    return datalist.size();
 }
 
 int ClientTableModel::columnCount(const QModelIndex &parent)const{
-    return 6;
+    return 7;
 }
 
 QVariant ClientTableModel::data(const QModelIndex &index, int role)const{
+    if (!index.isValid() || role != Qt::DisplayRole)
+        return QVariant();
 
     if (role == Qt::DisplayRole){
-        switch(index.column()){
-        case 0: return QString("q");
-        case 1: return QString("w");
-        case 2: return QString("e");
-        case 3: return QString("r");
-        case 4: return QString("t");
-        case 5: return QString("y");
-
-        }
+        return datalist.at(index.row()).at(index.column());
     }
 
     return QVariant();
@@ -39,22 +35,46 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
         case 0:
             return QString("ID");
         case 1:
-            return QString("Tytuł");
+            return QString("Imie");
         case 2:
-            return QString("Autor");
+            return QString("Nazwisko");
         case 3:
-            return QString("Rok Wydania");
+            return QString("Adres");
         case 4:
-            return QString("Gatunek");
+            return QString("Numer telefonu");
         case 5:
-            return QString("Liczba Wypożyczeń");
+            return QString("Email");
         case 6:
-            return QString("Liczba Egzemplarzy");
+            return QString("Numer Karty");
         }
     }
     return QVariant();
 }
+void ClientTableModel::setDataList(database *Db){
 
+    const char* sql = "SELECT * FROM Klienci;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(Db->Db,sql,-1,&stmt,NULL);
+    if (rc != SQLITE_OK) {
+        qDebug()<< sqlite3_errmsg(Db->Db);
+    }
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
+        QVector<QString>tmp;
+        tmp.append(QString(sqlite3_column_int(stmt,0)));
+        tmp.append((char*)sqlite3_column_text(stmt,1));
+        tmp.append((char*)sqlite3_column_text(stmt,2));
+        tmp.append((char*)sqlite3_column_text(stmt,3));
+        tmp.append(QString(sqlite3_column_int(stmt,4)));
+        tmp.append((char*)sqlite3_column_text(stmt,5));
+        tmp.append(QString(sqlite3_column_int(stmt,6)));
+
+
+        datalist.append(tmp);
+    }
+    qDebug()<<".count():"<<datalist.count();
+
+
+}
 void ClientTableModel::addElement(){
 
 
