@@ -1,4 +1,5 @@
 kwerendy do wyświetlania w aplikacji:
+znak(?) znaczy, że tam trzeba zbindować miejsce do wpisania danych.
 
 //tabela z danymi klientów
 SELECT * FROM Klienci;
@@ -7,5 +8,28 @@ SELECT * FROM Klienci;
 SELECT * FROM W_Ksiazki;
 
 //widok wypożyczen
+SELECT * FROM Wypożyczenia;
 
-//polecenie do wpisania wypożyczenia książki
+//polecenie do wpisania nowego wypożyczenia książki (^)
+INSERT INTO Wypożyczenia (id, klienci_id, ksiazki_id, data_wydania, termin_oddania) VALUES (NULL, ?, ?, date('now'), date('now', '+90 days'));
+
+//ustawienie statusu wypożyczenia książki, jeśli książka nie była wypożyczona (niech wykonuje się to wtedy, kiedy zostanie dodane nowe wypożyczenie)
+UPDATE Ksiazki SET czy_wypozyczone = 1 WHERE id = ?;
+UPDATE Ksiazki SET liczba_wypozyczen = liczba_wypozyczen + 1 WHERE id = ?;
+
+//kwerenda do wyświetlenia zaległych książek w chwili sprawdzenia
+SELECT * FROM W_opoznienia
+
+//polecenie do wpisania zaleglosci po oddaniu ksiazki do tabeli i daty zwrotu(jeśli nie minął termin oddania, to nie wpisze sie do tabeli z naliczonymi oplatami!)
+INSERT INTO Naliczone_oplaty (wypozyczenia_id, dni_po_terminie, oplata, czy_oplacone)
+SELECT wypozyczenia_id, dni_po_terminie, oplata, 0
+FROM W_opoznienia
+WHERE wypozyczenia_id = ?;
+UPDATE Wypożyczenia SET data_zwrotu = date('now') WHERE Wypożyczenia.id = ?;
+UPDATE Ksiazki SET czy_wypozyczone = 0 WHERE id = (SELECT ksiazki_id FROM Wypożyczenia WHERE Wypożyczenia.id = ?);
+
+//kwerenda do wyświetlenia nieopłaconych należności
+SELECT * FROM W_nieoplacone;
+
+//polecenie do zmiany statusu oplacenia na 1
+UPDATE Naliczone_oplaty SET czy_oplacone == 1 WHERE Naliczone_oplaty.id = ?;
