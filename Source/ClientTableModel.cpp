@@ -3,10 +3,10 @@
 #include <QDebug>
 #include "Headers/sqlite3.h"
 
-ClientTableModel::ClientTableModel(QObject *parent)
+ClientTableModel::ClientTableModel(database *Db, QObject *parent)
     : QAbstractTableModel(parent)
 {
-
+    this->setDataList(Db);
 }
 
 int ClientTableModel::rowCount(const QModelIndex &parent)const{
@@ -19,7 +19,8 @@ int ClientTableModel::columnCount(const QModelIndex &parent)const{
 }
 
 QVariant ClientTableModel::data(const QModelIndex &index, int role)const{
-
+    if (!index.isValid() || role != Qt::DisplayRole)
+        return QVariant();
 
     if (role == Qt::DisplayRole){
         return datalist.at(index.row()).at(index.column());
@@ -59,12 +60,15 @@ void ClientTableModel::setDataList(database *Db){
     }
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
         QVector<QString>tmp;
-        tmp.append(QString((int)sqlite3_column_int(stmt,0)));
+        tmp.append(QString(sqlite3_column_int(stmt,0)));
         tmp.append((char*)sqlite3_column_text(stmt,1));
         tmp.append((char*)sqlite3_column_text(stmt,2));
         tmp.append((char*)sqlite3_column_text(stmt,3));
-        tmp.append((char*)sqlite3_column_text(stmt,4));
-        tmp.append(QString((int)sqlite3_column_int(stmt,5)));
+        tmp.append(QString(sqlite3_column_int(stmt,4)));
+        tmp.append((char*)sqlite3_column_text(stmt,5));
+        tmp.append(QString(sqlite3_column_int(stmt,6)));
+
+
         datalist.append(tmp);
     }
     qDebug()<<".count():"<<datalist.count();

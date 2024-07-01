@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include "Headers/ClientTableModel.h"
+#include "Headers/BooksTableModel.h"
+#include "Headers/RentalsTableModel.h"
+#include "Headers/database.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -12,17 +15,21 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    database *Db = new database;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 
 public slots:
-    int isClientTable();
+    int isClientTable(database *Db);
     int isBooksTable();
+    int isRentalTable();
     //int addClientTable();
     //int addBooksTable();
 
 private slots:
+
+
     void on_addclient_clicked();
 
 private:

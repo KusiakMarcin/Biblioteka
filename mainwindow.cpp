@@ -1,30 +1,29 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "Headers/ClientTableModel.h"
-#include "Headers/BooksTableModel.h"
+#include "QTableView"
+#include <QItemSelectionModel>
 #include "addclientelement.h"
 #include <QDebug>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    isClientTable();
+    isClientTable(Db);
     isBooksTable();
+    isRentalTable();
 
 }
 
-int MainWindow::isClientTable(){
+int MainWindow::isClientTable(database *Db){
 
-    database Db;
-    Db.initDatabase();
+
     QHBoxLayout *layout = ui->horizontalLayout;
-    ClientTableModel *Model = new ClientTableModel;
+    ClientTableModel *Model = new ClientTableModel(Db);
     QTableView *ClientTable = new QTableView(this);
-    Model->setDataList(&Db);
     ClientTable->setModel(Model);
-
     layout->addWidget(ClientTable);
 
 }
@@ -40,19 +39,33 @@ int MainWindow::isBooksTable(){
 
 }
 
+int MainWindow::isRentalTable(){
+    QVBoxLayout *layout = ui->verticalLayout;
+    RentalsTableModel *Model = new RentalsTableModel;
+    QTableView *RentalTable = new QTableView(this);
+    RentalTable->setModel(Model);
+    layout->addWidget(RentalTable);
 
-
-MainWindow::~MainWindow(){
-    delete ui;
 
 }
 
 
 
-void MainWindow::on_addclient_clicked(){
+MainWindow::~MainWindow(){
+    delete ui;
+    delete Db;
 
-    addclientelement *dialog = new addclientelement(this);
+}
+
+
+
+
+
+
+
+void MainWindow::on_addclient_clicked()
+{
+    addclientelement *dialog = new addclientelement(Db, this);
     dialog->show();
-
 }
 

@@ -14,6 +14,7 @@ SOURCES += \
     Source/ClientTableModel.cpp \
     Source/Clients.cpp \
     Source/Rentals.cpp \
+    Source/RentalsTableModel.cpp \
     Source/database.cpp \
     Source/sqlite3.c \
     addbookelement.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     Headers/ClientTableModel.h \
     Headers/Clients.h \
     Headers/Rentals.h \
+    Headers/RentalsTableModel.h \
     Headers/database.h \
     Headers/sqlite3.h \
     addbookelement.h \
@@ -48,8 +50,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RESOURCES += \
-    DATA.qrc
 
 DISTFILES += \
     databases/data.db \

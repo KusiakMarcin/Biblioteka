@@ -4,7 +4,7 @@
 #include <QDebug>
 
 database::database() {
-
+    initDatabase();
 }
 
 database::~database() {
@@ -134,13 +134,15 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
     sqlite3_bind_int(stmt, 4, nrtel);
     sqlite3_bind_text(stmt, 5, email.toUtf8().constData(), email.length(), SQLITE_TRANSIENT);
 
+
+
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
-        fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(Db));
+        qDebug() << "Failed to execute statement: %s\n" <<sqlite3_errmsg(this->Db);
         sqlite3_finalize(stmt);
         return false;
     }
-    fprintf(stdout, "Record inserted successfully\n");
+    qDebug() <<"Record inserted successfully\n";
 
     sqlite3_finalize(stmt);
     return true;
