@@ -34,6 +34,15 @@ bool database::initDatabase(){
         "   \"gatunek\" TEXT NOT NULL UNIQUE,"
         "   PRIMARY KEY(\"id\")"
         ");"
+        "CREATE TABLE IF NOT EXISTS \"Klienci\" ("
+        "   \"id\" INTEGER PRIMARY KEY NOT NULL UNIQUE,"
+        "   \"imie\" VARCHAR(50) NOT NULL,"
+        "   \"nazwisko\" VARCHAR(50) NOT NULL,"
+        "   \"adres\" VARCHAR(100) NOT NULL,"
+        "   \"nr_telefonu\" VARCHAR(9) NOT NULL UNIQUE,"
+        "   \"email\" TEXT UNIQUE,"
+        "   \"nr_karty\" INTEGER(6) UNIQUE"
+        ");"
         "CREATE TABLE IF NOT EXISTS \"Autorzy\" ("
         "   \"id\" INTEGER NOT NULL,"
         "   \"name\" TEXT NOT NULL UNIQUE,"
@@ -114,7 +123,18 @@ bool database::initDatabase(){
         "FROM Naliczone_oplaty "
         "JOIN Wypożyczenia ON Naliczone_oplaty.wypozyczenia_id = Wypożyczenia.id "
         "JOIN Klienci ON Wypożyczenia.klienci_id = Klienci.id "
-        "WHERE Naliczone_oplaty.czy_oplacone == 0;";
+        "WHERE Naliczone_oplaty.czy_oplacone == 0;"
+        "CREATE TRIGGER auto_generate_card_id "
+        "AFTER INSERT ON klienci"
+        "BEGIN"
+        "UPDATE klienci"
+        "SET nr_karty = (SELECT value FROM nr_karty_losowy WHERE Field1 = 1)"
+        "WHERE id = NEW.id;"
+        "UPDATE nr_karty_losowy"
+        "SET value = value + 1"
+        "WHERE Field1 = 1;"
+        "END"
+        ;
 
      rc = sqlite3_exec(Db, sqlCreateTables, 0, 0, &zErrMsg);
         if (rc != SQLITE_OK) {
