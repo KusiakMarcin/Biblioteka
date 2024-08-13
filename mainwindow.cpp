@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "QTableView"
 #include <QItemSelectionModel>
-#include "addclientelement.h"
+
+
 #include <QDebug>
 
 
@@ -11,21 +11,18 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    isClientTable(Db);
+    setupClientTable();
     isBooksTable();
     isRentalTable();
+    //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
 
 }
 
-int MainWindow::isClientTable(database *Db){
 
-
-    QHBoxLayout *layout = ui->horizontalLayout;
-    ClientTableModel *Model = new ClientTableModel(Db);
-    QTableView *ClientTable = new QTableView(this);
-    ClientTable->setModel(Model);
-    layout->addWidget(ClientTable);
-
+void MainWindow::setupClientTable(){
+    ClientTable->setModel(ClientModel);
+    ui->horizontalLayout->addWidget(ClientTable);
+    connect(ClientTable->selectionModel(),&QItemSelectionModel::currentChanged,this,&MainWindow::updateSelectedClient);
 }
 
 int MainWindow::isBooksTable(){
@@ -54,6 +51,18 @@ int MainWindow::isRentalTable(){
 MainWindow::~MainWindow(){
     delete ui;
     delete Db;
+    delete ClientModel;
+    delete ClientTable;
+    delete dialogClient;
+
+
+}
+
+bool MainWindow::updateSelectedClient(const QModelIndex &current,const QModelIndex &previous){
+    SelectedClient = current;
+    qDebug()<<SelectedClient;
+    if(SelectedClient!=previous) return 1;
+    else return 0;
 
 }
 
@@ -61,11 +70,15 @@ MainWindow::~MainWindow(){
 
 
 
-
-
 void MainWindow::on_addclient_clicked()
 {
-    addclientelement *dialog = new addclientelement(Db, this);
+ dialogClient->show();
+}
+
+
+void MainWindow::on_addbook_clicked()
+{
+
     dialog->show();
 }
 

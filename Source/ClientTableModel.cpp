@@ -23,6 +23,7 @@ QVariant ClientTableModel::data(const QModelIndex &index, int role)const{
         return QVariant();
 
     if (role == Qt::DisplayRole){
+
         return datalist.at(index.row()).at(index.column());
     }
 
@@ -60,13 +61,17 @@ void ClientTableModel::setDataList(database *Db){
     }
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
         QVector<QString>tmp;
-        tmp.append(QString(sqlite3_column_int(stmt,0)));
+        QString str[3];
+        str[0].setNum(sqlite3_column_int(stmt,0));
+        str[1].setNum(sqlite3_column_int(stmt,4));
+        str[2].setNum(sqlite3_column_int(stmt,6));
+        tmp.append(str[0]);
         tmp.append((char*)sqlite3_column_text(stmt,1));
         tmp.append((char*)sqlite3_column_text(stmt,2));
         tmp.append((char*)sqlite3_column_text(stmt,3));
-        tmp.append(QString(sqlite3_column_int(stmt,4)));
+        tmp.append(str[1]);
         tmp.append((char*)sqlite3_column_text(stmt,5));
-        tmp.append(QString(sqlite3_column_int(stmt,6)));
+        tmp.append(str[2]);
 
 
         datalist.append(tmp);
