@@ -1,26 +1,38 @@
+
+
+
 #ifndef CLIENTS_H
 #define CLIENTS_H
 #include <iostream>
 #include <QString>
-using namespace std;
-class Clients{
-
-private:
-    int ClientID;
-    QString Imie;
-    QString Nazwisko;
-    QString Email;
-    QString Adres;
-    int NumerKarty;
-
-public:
-    Clients(int id,QString email,QString imie,QString nazwisko,QString adres,int numerkarty);
-    //Void PopulateTable();
-    //
-    //
-    //
-    ~Clients();
-
+#include "database.h"
+struct Clients{
+        int ClientID;
+        QString Imie;
+        QString Nazwisko;
+        QString Adres;
+        int NumerTelefonu;
+        QString Email;
+        int NumerKarty;
 };
+
+//using namespace std;
+//class Clients{
+
+//private:
+//    int ClientID;
+//    QString Imie;
+//    QString Nazwisko;
+//    QString Adres;
+//    int NumerTelefonu;
+//    QString Email;
+//    int NumerKarty;
+
+//public:
+//    Clients(int id,QString imie,QString nazwisko,QString adres,int telefon,QString email,int numerkarty);
+//    void setDataList(database *Db);
+//    ~Clients();
+
+//};
 
 #endif // CLIENTS_H

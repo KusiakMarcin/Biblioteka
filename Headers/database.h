@@ -4,14 +4,22 @@
 #include <QString>
 #include <QVector>
 
+
 class database{
-public:
+private:
     sqlite3 *Db;
+    union trolling {
+        int integer;
+        QString string;
+    };
+
+public:
+
     database();
     ~database();
     bool initDatabase();
     bool addNewClient(const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
-
+    trolling clientDataHandler(int column,int ID);
 
 };
 

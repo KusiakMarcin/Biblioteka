@@ -1,7 +1,7 @@
 #include "Headers/ClientTableModel.h"
 #include "Headers/Clients.h"
 #include <QDebug>
-#include "Headers/sqlite3.h"
+
 
 ClientTableModel::ClientTableModel(database *Db, QObject *parent)
     : QAbstractTableModel(parent)
@@ -21,10 +21,16 @@ int ClientTableModel::columnCount(const QModelIndex &parent)const{
 QVariant ClientTableModel::data(const QModelIndex &index, int role)const{
     if (!index.isValid() || role != Qt::DisplayRole)
         return QVariant();
-
     if (role == Qt::DisplayRole){
-
-        return datalist.at(index.row()).at(index.column());
+        switch(index.column()){
+        case 0: return datalist.at(index.row()).ClientID;
+        case 1: return datalist.at(index.row()).Imie;
+        case 2: return datalist.at(index.row()).Nazwisko;
+        case 3: return datalist.at(index.row()).Adres;
+        case 4: return datalist.at(index.row()).NumerTelefonu;
+        case 5: return datalist.at(index.row()).Email;
+        case 6: return datalist.at(index.row()).NumerKarty;
+        }
     }
 
     return QVariant();
@@ -60,30 +66,35 @@ void ClientTableModel::setDataList(database *Db){
         qDebug()<< sqlite3_errmsg(Db->Db);
     }
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
-        QVector<QString>tmp;
-        QString str[3];
-        str[0].setNum(sqlite3_column_int(stmt,0));
-        str[1].setNum(sqlite3_column_int(stmt,4));
-        str[2].setNum(sqlite3_column_int(stmt,6));
-        tmp.append(str[0]);
-        tmp.append((char*)sqlite3_column_text(stmt,1));
-        tmp.append((char*)sqlite3_column_text(stmt,2));
-        tmp.append((char*)sqlite3_column_text(stmt,3));
-        tmp.append(str[1]);
-        tmp.append((char*)sqlite3_column_text(stmt,5));
-        tmp.append(str[2]);
+        Clients tmp;
 
-
+        tmp.ClientID = sqlite3_column_int(stmt,0);
+        tmp.Imie =(char*)sqlite3_column_text(stmt,1);
+        tmp.Nazwisko =(char*)sqlite3_column_text(stmt,2);
+        tmp.Adres =(char*)sqlite3_column_text(stmt,3);
+        tmp.NumerTelefonu = sqlite3_column_int(stmt,4);
+        tmp.Email=(char*)sqlite3_column_text(stmt,5);
+        tmp.NumerKarty =sqlite3_column_int(stmt,6);
         datalist.append(tmp);
     }
     qDebug()<<".count():"<<datalist.count();
 
-
 }
-void ClientTableModel::addElement(){
+
+void ClientTableModel::addElement(QString imie,QString nazwisko,QString adres,int nrtel,QString email,database *Db){
 
 
-    insertRow(rowCount());
+    beginInsertRows(QModelIndex(),1,1);
+    const char* sql = "SELECT * FROM Klienci WHERE nr_telefonu = ?;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(Db->Db,sql,-1,&stmt,NULL);
+    if (rc != SQLITE_OK) {
+        qDebug()<< sqlite3_errmsg(Db->Db);
+    }
+
+    qDebug()<<"clicked";
+
+    endInsertRows();
 }
 
 

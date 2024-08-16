@@ -8,7 +8,7 @@
 #include "QTableView"
 #include "addclientelement.h"
 #include "addbookelement.h"
-#include <QAbstractItemModel>
+#include <QSortFilterProxyModel>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,12 +20,13 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     void setupClientTable();
+    void setupBookTable();
     ~MainWindow();
 
 
 
 public slots:
-    int isBooksTable();
+
     int isRentalTable();
 
     //int addClientTable();
@@ -34,8 +35,9 @@ public slots:
 private slots:
 
     bool updateSelectedClient(const QModelIndex &current,const QModelIndex &previous);
-    void on_addclient_clicked();
-    void on_addbook_clicked();
+    bool updateSelectedBook(const QModelIndex &current,const QModelIndex &previous);
+    void addClientDialog();
+    void addBookDialog();
 
 private:
     Ui::MainWindow *ui;
@@ -43,7 +45,11 @@ private:
     ClientTableModel *ClientModel = new ClientTableModel(Db);
     QTableView *ClientTable = new QTableView(this);
     addclientelement *dialogClient = new addclientelement(Db, this);
-    addbookelement *dialog = new addbookelement(Db,this);
+    addbookelement *dialogBook = new addbookelement(Db,this);
+    BooksTableModel *BookModel = new BooksTableModel;
+    QTableView *BooksTable = new QTableView(this);
+    RentalsTableModel *RentalModel = new RentalsTableModel;
+    QTableView *RentalTable = new QTableView(this);
     QModelIndex SelectedClient;
     QModelIndex SelectedBook;
     QModelIndex SelectedRental;

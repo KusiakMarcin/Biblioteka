@@ -12,7 +12,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setupClientTable();
-    isBooksTable();
+    setupBookTable();
+    connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
+    connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
     isRentalTable();
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
 
@@ -20,28 +22,27 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 void MainWindow::setupClientTable(){
-    ClientTable->setModel(ClientModel);
-    ui->horizontalLayout->addWidget(ClientTable);
+    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSourceModel(ClientModel);
+    ClientTable->setModel(proxyModel);
+    ClientTable->setSortingEnabled(true);
+    ClientTable->resizeColumnsToContents();
+    ui->clientLayout->addWidget(ClientTable);
     connect(ClientTable->selectionModel(),&QItemSelectionModel::currentChanged,this,&MainWindow::updateSelectedClient);
 }
 
-int MainWindow::isBooksTable(){
+void MainWindow::setupBookTable(){
 
-
-    QHBoxLayout *layout = ui->horizontalLayout;
-    BooksTableModel *Model = new BooksTableModel;
-    QTableView *BooksTable = new QTableView(this);
-    BooksTable->setModel(Model);
-    layout->addWidget(BooksTable);
-
+    BooksTable->setModel(BookModel);
+    ui->bookLayout->addWidget(BooksTable);
+    connect(BooksTable->selectionModel(),&QItemSelectionModel::currentChanged,this,&MainWindow::updateSelectedBook);
 }
 
 int MainWindow::isRentalTable(){
-    QVBoxLayout *layout = ui->verticalLayout;
-    RentalsTableModel *Model = new RentalsTableModel;
-    QTableView *RentalTable = new QTableView(this);
-    RentalTable->setModel(Model);
-    layout->addWidget(RentalTable);
+
+
+    RentalTable->setModel(RentalModel);
+    ui->rentalLayout->addWidget(RentalTable);
 
 
 }
@@ -53,8 +54,12 @@ MainWindow::~MainWindow(){
     delete Db;
     delete ClientModel;
     delete ClientTable;
+    delete BookModel;
+    delete BooksTable;
+    delete RentalModel;
+    delete RentalTable;
     delete dialogClient;
-
+    delete dialogBook;
 
 }
 
@@ -66,19 +71,24 @@ bool MainWindow::updateSelectedClient(const QModelIndex &current,const QModelInd
 
 }
 
+bool MainWindow::updateSelectedBook(const QModelIndex &current,const QModelIndex &previous){
+    SelectedBook = current;
+    qDebug()<<SelectedClient;
+    if(SelectedClient!=previous) return 1;
+    else return 0;
 
-
-
-
-void MainWindow::on_addclient_clicked()
-{
- dialogClient->show();
 }
 
 
-void MainWindow::on_addbook_clicked()
-{
 
-    dialog->show();
+
+
+void MainWindow::addClientDialog(){
+    dialogClient->show();
+}
+
+
+void MainWindow::addBookDialog(){
+    dialogBook->show();
 }
 

@@ -148,5 +148,18 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
     return true;
 }
 
+trolling database::clientDataHandler(int column,int ID){
+    if(ID ==-1){
+        sqlite3_stmt* stmt = nullptr;
+        const char* findID = "SELECT MAX(id) FROM Klienci";
+        const char* querry = "Select";
+        delete stmt;
+    }
+
+
+
+
+}
+
 
 
