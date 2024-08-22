@@ -6,7 +6,7 @@
 ClientTableModel::ClientTableModel(database *Db, QObject *parent)
     : QAbstractTableModel(parent)
 {
-    this->setDataList(Db);
+    datalist = Db->setDataList();
 }
 
 int ClientTableModel::rowCount(const QModelIndex &parent)const{
@@ -57,48 +57,16 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
     }
     return QVariant();
 }
-void ClientTableModel::setDataList(database *Db){
 
-    const char* sql = "SELECT * FROM Klienci;";
-    sqlite3_stmt* stmt;
-    int rc = sqlite3_prepare_v2(Db->Db,sql,-1,&stmt,NULL);
-    if (rc != SQLITE_OK) {
-        qDebug()<< sqlite3_errmsg(Db->Db);
-    }
-    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
-        Clients tmp;
+//void ClientTableModel::addElement(Clients input){
 
-        tmp.ClientID = sqlite3_column_int(stmt,0);
-        tmp.Imie =(char*)sqlite3_column_text(stmt,1);
-        tmp.Nazwisko =(char*)sqlite3_column_text(stmt,2);
-        tmp.Adres =(char*)sqlite3_column_text(stmt,3);
-        tmp.NumerTelefonu = sqlite3_column_int(stmt,4);
-        tmp.Email=(char*)sqlite3_column_text(stmt,5);
-        tmp.NumerKarty =sqlite3_column_int(stmt,6);
-        datalist.append(tmp);
-    }
-    qDebug()<<".count():"<<datalist.count();
+//bool insertRows(int row, int count, const QModelIndex &parent){
 
-}
-
-void ClientTableModel::addElement(QString imie,QString nazwisko,QString adres,int nrtel,QString email,database *Db){
+//    return true;
+//}
 
 
-    beginInsertRows(QModelIndex(),1,1);
-    const char* sql = "SELECT * FROM Klienci WHERE nr_telefonu = ?;";
-    sqlite3_stmt* stmt;
-    int rc = sqlite3_prepare_v2(Db->Db,sql,-1,&stmt,NULL);
-    if (rc != SQLITE_OK) {
-        qDebug()<< sqlite3_errmsg(Db->Db);
-    }
-
-    qDebug()<<"clicked";
-
-    endInsertRows();
-}
+////void ClientTableModel::deleteElement(){
 
 
-void ClientTableModel::deleteElement(){
-
-
-}
+//}

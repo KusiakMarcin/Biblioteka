@@ -21,10 +21,13 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation,int role)const override;
+//    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 public slots:
-    void setDataList(database *Db);
-    void addElement(QString imie,QString nazwisko,QString adres,int nrtel,QString email,database *Db);
-    void deleteElement();
+    //void addElement(Clients input);
+
+//    void deleteElement();
+signals:
+    void dataUpdated();
 };
 
 

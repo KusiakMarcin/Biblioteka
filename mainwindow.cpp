@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     setupClientTable();
     setupBookTable();
     connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
-    connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
     isRentalTable();
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
 

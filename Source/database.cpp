@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <QDebug>
 
+
+
+
 database::database() {
     initDatabase();
 }
@@ -148,18 +151,54 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
     return true;
 }
 
-trolling database::clientDataHandler(int column,int ID){
-    if(ID ==-1){
+type database::clientDataHandler(int column,int ID){
+
+
+    type tmp{0,"\0"};
+    if(ID ==-1){                                                    //przypadek dla sytuacji gdy musimy pobrać brakujące dane do tabeli po utworzeniu rekordu
+        sqlite3_stmt* stmtID = nullptr;                             //ID i Numer Karty są generowane dla nowego rekordu w bazie danych i nie są podawane przez użytkownika
+        const char* findID = "SELECT MAX(id) FROM Klienci";         //żeby uniknąć ponownego ClientTableModel::setdatalist() pobierasz MAX(id)
+        qDebug() << sqlite3_prepare_v2(Db,findID,-1,&stmtID,NULL);              //najnowszy rekord zawsze posiada MAX(id)
+        sqlite3_step(stmtID);
+        int ID = sqlite3_column_int(stmtID,clientColumn::ID);
+
         sqlite3_stmt* stmt = nullptr;
-        const char* findID = "SELECT MAX(id) FROM Klienci";
-        const char* querry = "Select";
-        delete stmt;
+        const char* CardNum = "SELECT * FROM Klienci WHERE id=\"?\"";
+        qDebug() << sqlite3_prepare_v2(Db,CardNum,-1,&stmt,NULL);
+        sqlite3_bind_int(stmt,1,ID);
+        sqlite3_step(stmt);
+        if(column == clientColumn::ID||column==clientColumn::CARD_NUM){
+            tmp.integer = sqlite3_column_int(stmt,column);
+        }
+        else{
+            tmp.string = (char*)sqlite3_column_text(stmt,column);
+        }
+
     }
-
-
-
-
+    return tmp;
 }
+QVector<Clients> database::setDataList(){
+    QVector<Clients> datalist;
+    const char* sql = "SELECT * FROM Klienci;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(Db,sql,-1,&stmt,NULL);
+    if (rc != SQLITE_OK) {
+        qDebug()<< sqlite3_errmsg(Db);
+    }
+    while ((sqlite3_step(stmt)) == SQLITE_ROW){
+        Clients tmp;
 
+        tmp.ClientID = sqlite3_column_int(stmt,0);
+        tmp.Imie =(char*)sqlite3_column_text(stmt,1);
+        tmp.Nazwisko =(char*)sqlite3_column_text(stmt,2);
+        tmp.Adres =(char*)sqlite3_column_text(stmt,3);
+        tmp.NumerTelefonu = sqlite3_column_int(stmt,4);
+        tmp.Email=(char*)sqlite3_column_text(stmt,5);
+        tmp.NumerKarty =sqlite3_column_int(stmt,6);
+        datalist.append(tmp);
+    }
+    qDebug()<<".count():"<<datalist.count();
+    return datalist;
+}
 
 

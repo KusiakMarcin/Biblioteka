@@ -1,11 +1,10 @@
-
-
-
 #ifndef CLIENTS_H
 #define CLIENTS_H
 #include <iostream>
 #include <QString>
-#include "database.h"
+
+enum clientColumn{ID,NAME,LASTNAME,ADRESS,PHONE_NUM,EMAIL,CARD_NUM};
+
 struct Clients{
         int ClientID;
         QString Imie;

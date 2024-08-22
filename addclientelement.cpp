@@ -22,9 +22,10 @@ void addclientelement::on_pushButton_dodajKlienta_2_clicked(){
     Client.Email = ui->lineEdit_email_2->text();
 
     if (Db->addNewClient(Client.Imie, Client.Nazwisko, Client.Adres, Client.NumerTelefonu, Client.Email)) {
-        const char *querry = "SELECT * FROM Klienci WHERE nr_telefonu =\"?\";";
-        QMessageBox::information(this, "Information", "Record inserted successfully.");                     //wyświetla komunikat o poprawnym wprowadzeniu danych lub błędzie
-        emit submitInput(Client);                                                  //emituje sygnal do Modelu o wprowadzeniu danych i przekazuje dane do modelu
+        Client.ClientID = Db->clientDataHandler(clientColumn::ID,-1).integer;
+        Client.NumerKarty = Db->clientDataHandler(clientColumn::CARD_NUM,-1).integer;
+        QMessageBox::information(this, "Information", "Record inserted successfully.");
+        emit submitInput(Client);
     } else {
         QMessageBox::critical(this, "Error", "Failed to insert record into database.");
     }
