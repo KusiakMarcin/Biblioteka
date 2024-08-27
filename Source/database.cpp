@@ -3,9 +3,6 @@
 #include <stdio.h>
 #include <QDebug>
 
-
-
-
 database::database() {
     initDatabase();
 }
@@ -137,8 +134,6 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
     sqlite3_bind_int(stmt, 4, nrtel);
     sqlite3_bind_text(stmt, 5, email.toUtf8().constData(), email.length(), SQLITE_TRANSIENT);
 
-
-
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
         qDebug() << "Failed to execute statement: %s\n" <<sqlite3_errmsg(this->Db);
@@ -148,6 +143,26 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
     qDebug() <<"Record inserted successfully\n";
 
     sqlite3_finalize(stmt);
+    return true;
+}
+
+bool database::removeClient(const int ClientID){
+    const char* deleteQuery = "DELETE FROM clients WHERE id = ?;";
+    sqlite3_stmt* stmtRemoveClient;
+    if (sqlite3_prepare_v2(Db, deleteQuery, -1, &stmtRemoveClient, nullptr) != SQLITE_OK) {
+        qDebug() << "Failed to prepare delete statement:" << sqlite3_errmsg(Db);
+        return false;
+    }
+
+    sqlite3_bind_int(stmtRemoveClient, 1, ClientID);
+
+    if (sqlite3_step(stmtRemoveClient) != SQLITE_DONE) {
+        qDebug() << "Failed to execute delete statement:" << sqlite3_errmsg(Db);
+        sqlite3_finalize(stmtRemoveClient);
+        return false;
+    }
+
+    sqlite3_finalize(stmtRemoveClient);
     return true;
 }
 

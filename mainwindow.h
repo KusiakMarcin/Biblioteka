@@ -8,6 +8,7 @@
 #include "QTableView"
 #include "addclientelement.h"
 #include "addbookelement.h"
+#include "removeclientelement.h"
 #include <QSortFilterProxyModel>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -39,6 +40,8 @@ private slots:
     void addClientDialog();
     void addBookDialog();
 
+    void removeClientDialog();
+
 private:
     Ui::MainWindow *ui;
     database *Db = new database;                            //strumien do bazy danych
@@ -46,6 +49,7 @@ private:
     QTableView *ClientTable = new QTableView(this);
     addclientelement *dialogClient = new addclientelement(Db, this);
     addbookelement *dialogBook = new addbookelement(Db,this);
+  //  RemoveClientElement *dialogRemoveClient = new RemoveClientElement;
     BooksTableModel *BookModel = new BooksTableModel;
     QTableView *BooksTable = new QTableView(this);
     RentalsTableModel *RentalModel = new RentalsTableModel;

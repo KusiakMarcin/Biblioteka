@@ -3,7 +3,7 @@
 #include "Headers/database.h"
 #include <QDialog>
 #include "Headers/Clients.h"
-#include "Headers/database.h"
+
 namespace Ui {class addclientelement;}
 
 class addclientelement : public QDialog

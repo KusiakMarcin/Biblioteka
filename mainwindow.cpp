@@ -1,8 +1,8 @@
 #include "mainwindow.h"
+#include "removeclientelement.h"
 #include "ui_mainwindow.h"
 #include <QItemSelectionModel>
-
-
+#include <QMessageBox>
 #include <QDebug>
 
 
@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     setupBookTable();
     connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
     isRentalTable();
+    connect(ui->clientdelete, &QPushButton::clicked, this, &MainWindow::removeClientDialog);
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
 
 }
@@ -46,7 +47,36 @@ int MainWindow::isRentalTable(){
 
 }
 
+void MainWindow::removeClientDialog() {
+    if (!SelectedClient.isValid()) {
+        qDebug() << "No client selected.";
+        return;
+    }
 
+    int clientID = SelectedClient.sibling(SelectedClient.row(), 0).data().toInt();
+    QString clientName = SelectedClient.sibling(SelectedClient.row(), 1).data().toString();
+    QString clientSurname = SelectedClient.sibling(SelectedClient.row(), 2).data().toString();
+    QString clientAddress = SelectedClient.sibling(SelectedClient.row(), 3).data().toString();
+    int clientPhone = SelectedClient.sibling(SelectedClient.row(), 4).data().toInt();
+    QString clientEmail = SelectedClient.sibling(SelectedClient.row(), 5).data().toString();
+
+    Clients client;
+    client.ClientID = clientID;
+    client.Imie = clientName;
+    client.Nazwisko = clientSurname;
+    client.Adres = clientAddress;
+    client.NumerTelefonu = clientPhone;
+    client.Email = clientEmail;
+
+    RemoveClientElement dialog(this, client);
+    if (dialog.exec() == QDialog::Accepted && dialog.isConfirmed()) {
+        if (Db->removeClient(client.ClientID)) {
+            qDebug() << "Client removed successfully.";
+        } else {
+            qDebug() << "Failed to remove client.";
+        }
+    }
+}
 
 MainWindow::~MainWindow(){
     delete ui;
@@ -78,10 +108,6 @@ bool MainWindow::updateSelectedBook(const QModelIndex &current,const QModelIndex
 
 }
 
-
-
-
-
 void MainWindow::addClientDialog(){
     dialogClient->show();
 }
@@ -90,4 +116,3 @@ void MainWindow::addClientDialog(){
 void MainWindow::addBookDialog(){
     dialogBook->show();
 }
-

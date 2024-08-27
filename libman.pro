@@ -21,7 +21,8 @@ SOURCES += \
     addclientelement.cpp \
     createrental.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    removeclientelement.cpp
 
 
 
@@ -37,13 +38,15 @@ HEADERS += \
     addbookelement.h \
     addclientelement.h \
     createrental.h \
-    mainwindow.h
+    mainwindow.h \
+    removeclientelement.h
 
 FORMS += \
     addbookelement.ui \
     addclientelement.ui \
     createrental.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    removeclientelement.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

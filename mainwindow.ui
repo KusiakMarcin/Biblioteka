@@ -86,7 +86,7 @@
      <item>
       <widget class="QPushButton" name="clientadd">
        <property name="text">
-        <string>Dodaj Klietna</string>
+        <string>Dodaj Klienta</string>
        </property>
       </widget>
      </item>
@@ -262,8 +262,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="appointment-new">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="appointment-new"/>
    </property>
    <property name="text">
     <string>Wyswietl</string>

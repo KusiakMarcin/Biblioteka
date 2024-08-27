@@ -21,6 +21,7 @@ public:
     ~database();
     bool initDatabase();
     bool addNewClient(const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
+    bool removeClient(const int ClientID);
     QVector<Clients> setDataList();
     type clientDataHandler(int column,int ID);
 
