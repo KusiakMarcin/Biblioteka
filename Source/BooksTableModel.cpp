@@ -1,5 +1,6 @@
 #include "Headers/BooksTableModel.h"
 #include "Headers/Books.h"
+#include <QDebug>
 
 BooksTableModel::BooksTableModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -9,7 +10,7 @@ BooksTableModel::BooksTableModel(QObject *parent)
 
 int BooksTableModel::rowCount(const QModelIndex &parent)const{
 
-    return 1;
+    return datalist.size();
 }
 
 int BooksTableModel::columnCount(const QModelIndex &parent)const{
@@ -19,15 +20,7 @@ int BooksTableModel::columnCount(const QModelIndex &parent)const{
 QVariant BooksTableModel::data(const QModelIndex &index, int role)const{
 
     if (role == Qt::DisplayRole){
-        switch(index.column()){
-        case 0: return QString("q");
-        case 1: return QString("w");
-        case 2: return QString("e");
-        case 3: return QString("r");
-        case 4: return QString("t");
-        case 5: return QString("y");
-
-        }
+        return datalist.at(index.row()).at(index.column());
     }
 
     return QVariant();
@@ -54,7 +47,31 @@ QVariant BooksTableModel::headerData(int section, Qt::Orientation orientation, i
     }
     return QVariant();
 }
+void BooksTableModel::setDataList(database *Db){
 
+    const char* sql = "SELECT * FROM Ksiazki;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(Db->Db,sql,-1,&stmt,NULL);
+    if (rc != SQLITE_OK) {
+        qDebug()<< sqlite3_errmsg(Db->Db);
+    }
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
+        QVector<QString>tmp;
+        tmp.append(QString(sqlite3_column_int(stmt,0)));
+        tmp.append((char*)sqlite3_column_text(stmt,1));
+        tmp.append((char*)sqlite3_column_text(stmt,2));
+        tmp.append((char*)sqlite3_column_text(stmt,3));
+        tmp.append(QString(sqlite3_column_int(stmt,4)));
+        tmp.append((char*)sqlite3_column_text(stmt,5));
+        tmp.append(QString(sqlite3_column_int(stmt,6)));
+
+
+        datalist.append(tmp);
+    }
+    qDebug()<<".count():"<<datalist.count();
+
+
+}
 void BooksTableModel::addElement(){
 
 

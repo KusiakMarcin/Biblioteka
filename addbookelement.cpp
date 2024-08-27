@@ -1,7 +1,7 @@
 #include "addbookelement.h"
 #include "ui_addbookelement.h"
 
-addbookelement::addbookelement(QWidget *parent) :
+addbookelement::addbookelement(database* Db,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::addbookelement)
 {

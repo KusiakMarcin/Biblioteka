@@ -1,12 +1,12 @@
 #include "Headers/ClientTableModel.h"
 #include "Headers/Clients.h"
 #include <QDebug>
-#include "Headers/sqlite3.h"
+
 
 ClientTableModel::ClientTableModel(database *Db, QObject *parent)
     : QAbstractTableModel(parent)
 {
-    this->setDataList(Db);
+    datalist = Db->setDataList();
 }
 
 int ClientTableModel::rowCount(const QModelIndex &parent)const{
@@ -21,9 +21,16 @@ int ClientTableModel::columnCount(const QModelIndex &parent)const{
 QVariant ClientTableModel::data(const QModelIndex &index, int role)const{
     if (!index.isValid() || role != Qt::DisplayRole)
         return QVariant();
-
     if (role == Qt::DisplayRole){
-        return datalist.at(index.row()).at(index.column());
+        switch(index.column()){
+        case 0: return datalist.at(index.row()).ClientID;
+        case 1: return datalist.at(index.row()).Imie;
+        case 2: return datalist.at(index.row()).Nazwisko;
+        case 3: return datalist.at(index.row()).Adres;
+        case 4: return datalist.at(index.row()).NumerTelefonu;
+        case 5: return datalist.at(index.row()).Email;
+        case 6: return datalist.at(index.row()).NumerKarty;
+        }
     }
 
     return QVariant();
@@ -50,39 +57,16 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
     }
     return QVariant();
 }
-void ClientTableModel::setDataList(database *Db){
 
-    const char* sql = "SELECT * FROM Klienci;";
-    sqlite3_stmt* stmt;
-    int rc = sqlite3_prepare_v2(Db->Db,sql,-1,&stmt,NULL);
-    if (rc != SQLITE_OK) {
-        qDebug()<< sqlite3_errmsg(Db->Db);
-    }
-    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
-        QVector<QString>tmp;
-        tmp.append(QString(sqlite3_column_int(stmt,0)));
-        tmp.append((char*)sqlite3_column_text(stmt,1));
-        tmp.append((char*)sqlite3_column_text(stmt,2));
-        tmp.append((char*)sqlite3_column_text(stmt,3));
-        tmp.append(QString(sqlite3_column_int(stmt,4)));
-        tmp.append((char*)sqlite3_column_text(stmt,5));
-        tmp.append(QString(sqlite3_column_int(stmt,6)));
+//void ClientTableModel::addElement(Clients input){
+
+//bool insertRows(int row, int count, const QModelIndex &parent){
+
+//    return true;
+//}
 
 
-        datalist.append(tmp);
-    }
-    qDebug()<<".count():"<<datalist.count();
+////void ClientTableModel::deleteElement(){
 
 
-}
-void ClientTableModel::addElement(){
-
-
-    insertRow(rowCount());
-}
-
-
-void ClientTableModel::deleteElement(){
-
-
-}
+//}

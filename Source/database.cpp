@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <QDebug>
 
+
+
+
 database::database() {
     initDatabase();
 }
@@ -15,6 +18,9 @@ database::~database() {
 
 bool database::initDatabase(){
 
+
+    //sqlite3 *Db; to jest zadeklarowane w database.h, w ten sposob przeciazasz(chyba) i korzystasz ze strumienia w funkcji a ten zadeklarowany w obiekcie zostaje
+    //              niezainicjalizowany i nie da sie z niego korzystac
     const char *filename = "data.db";
     char *zErrMsg = 0;
     int rc;
@@ -29,125 +35,77 @@ bool database::initDatabase(){
     }
 
         const char *sqlCreateTables =
-        "CREATE TABLE IF NOT EXISTS \"Gatunki\" ("
-        "   \"id\" INTEGER NOT NULL,"
-        "   \"gatunek\" TEXT NOT NULL UNIQUE,"
-        "   PRIMARY KEY(\"id\")"
-        ");"
-        "CREATE TABLE IF NOT EXISTS \"Klienci\" ("
-        "   \"id\" INTEGER PRIMARY KEY NOT NULL UNIQUE,"
-        "   \"imie\" VARCHAR(50) NOT NULL,"
-        "   \"nazwisko\" VARCHAR(50) NOT NULL,"
-        "   \"adres\" VARCHAR(100) NOT NULL,"
-        "   \"nr_telefonu\" VARCHAR(9) NOT NULL UNIQUE,"
-        "   \"email\" TEXT UNIQUE,"
-        "   \"nr_karty\" INTEGER(6) UNIQUE "
-        "CHECK ("
-        "\"email\" LIKE '%_@_%._%' AND "
-        "LENGTH(\"email\") - LENGTH(REPLACE(\"email\", '@', '')) = 1 AND "
-        "SUBSTR(LOWER(\"email\"), 1, INSTR(\"email\", '@') - 1) NOT GLOB '*[^a-z0-9._%+-]*' AND "
-        "SUBSTR(LOWER(\"email\"), INSTR(\"email\", '@') + 1, INSTR(\"email\", '.') - INSTR(\"email\", '@') - 1)  GLOB '*[^a-z0-9.-]*' AND "
-        "SUBSTR(LOWER(\"email\"), INSTR(\"email\", '.') + 1) GLOB '*[^a-z]*'"
-        "),"
-        "CHECK ("
-        "LENGTH (nr_telefonu) = 9"
-        "),"
-        "CHECK ("
-        "LENGTH (nr_karty) = 6"
-        ")"
-        ");"
-        "CREATE TABLE IF NOT EXISTS \"Autorzy\" ("
-        "   \"id\" INTEGER NOT NULL,"
-        "   \"name\" TEXT NOT NULL UNIQUE,"
-        "   PRIMARY KEY(\"id\")"
-        ");"
-        "CREATE TABLE IF NOT EXISTS \"nr_karty_losowy\" ("
-        "   \"Field1\" INTEGER,"
-        "   \"value\" INTEGER DEFAULT 100000,"
-        "   PRIMARY KEY(\"Field1\" AUTOINCREMENT)"
-        ");"
-        "CREATE TABLE IF NOT EXISTS \"Wypożyczenia\" ("
-        "   \"id\" INTEGER NOT NULL,"
-        "   \"klienci_id\" INTEGER NOT NULL,"
-        "   \"ksiazki_id\" INTEGER NOT NULL,"
-        "   \"data_wydania\" DATETIME NOT NULL,"
-        "   \"data_zwrotu\" DATETIME,"
-        "   \"termin_oddania\" DATETIME NOT NULL,"
-        "   FOREIGN KEY(\"klienci_id\") REFERENCES \"Klienci\"(\"id\"),"
-        "   FOREIGN KEY(\"ksiazki_id\") REFERENCES \"Ksiazki\"(\"id\"),"
-        "   PRIMARY KEY(\"id\")"
-        ");"
-        "CREATE TABLE IF NOT EXISTS \"Kwota_oplaty\" ("
-        "   \"oplata_dzienna\" REAL"
-        ");"
-        "CREATE TABLE IF NOT EXISTS \"Naliczone_oplaty\" ("
-        "   \"id\" INTEGER,"
-        "   \"wypozyczenia_id\" INTEGER,"
-        "   \"dni_po_terminie\" INTEGER,"
-        "   \"oplata\" REAL,"
-        "   \"czy_oplacone\" INTEGER DEFAULT 0,"
-        "   PRIMARY KEY(\"id\" AUTOINCREMENT)"
-        ");"
-        "CREATE TABLE IF NOT EXISTS \"Ksiazki\" ("
-        "   \"opis\" TEXT,"
-        "   \"id\" INTEGER,"
-        "   \"tytul\" TEXT NOT NULL,"
-        "   \"autorzy_id\" INTEGER NOT NULL,"
-        "   \"czy_wypozyczone\" NUMERIC NOT NULL,"
-        "   \"rok_wydania\" INTEGER NOT NULL,"
-        "   \"gatunek_id\" INTEGER NOT NULL,"
-        "   \"liczba_wypozyczen\" INTEGER,"
-        "   FOREIGN KEY(\"gatunek_id\") REFERENCES \"Gatunki\"(\"id\"),"
-        "   FOREIGN KEY(\"autorzy_id\") REFERENCES \"Autorzy\"(\"id\"),"
-        "   PRIMARY KEY(\"id\" AUTOINCREMENT)"
-        ");"
-        "CREATE VIEW IF NOT EXISTS W_Ksiazki AS "
-        "SELECT Ksiazki.id AS id, "
-        "   Ksiazki.tytul AS tytul, "
-        "   Autorzy.name AS Autor, "
-        "   Ksiazki.rok_wydania AS rok_wydania, "
-        "   Gatunki.gatunek AS gatunek, "
-        "   Ksiazki.czy_wypozyczone AS czy_wypozyczone, "
-        "   count(Ksiazki.tytul) AS ilosc_egzemplarzy "
-        "FROM Ksiazki "
-        "JOIN Autorzy ON Ksiazki.autorzy_id = Autorzy.id "
-        "JOIN Gatunki ON Ksiazki.gatunek_id = Gatunki.id "
-        "GROUP BY Ksiazki.tytul;"
-        "CREATE VIEW IF NOT EXISTS W_opoznienia AS "
-        "SELECT "
-        "   Wypożyczenia.id AS wypozyczenia_id, "
-        "   Wypożyczenia.klienci_id as klienci_id, "
-        "   Klienci.imie as imie_klienta, "
-        "   Klienci.nazwisko as nazwisko_klienta, "
-        "   Wypożyczenia.ksiazki_id AS ksiazki_id, "
-        "   CAST(julianday('now') - julianday(Wypożyczenia.termin_oddania) AS INTEGER) as dni_po_terminie, "
-        "   round((julianday('now') - julianday(Wypożyczenia.termin_oddania)) * 0.10, 2) as oplata "
-        "FROM Wypożyczenia "
-        "JOIN Klienci ON Wypożyczenia.klienci_id = Klienci.id "
-        "WHERE Wypożyczenia.data_zwrotu IS NULL "
-        "AND julianday('now') > julianday(Wypożyczenia.termin_oddania);"
-        "CREATE VIEW IF NOT EXISTS W_nieoplacone as "
-        "SELECT Naliczone_oplaty.id as id, "
-        "   Wypożyczenia.id as wypozyczenia_id, "
-        "   Klienci.id as klienci_id, "
-        "   Klienci.imie as imie_klienta, "
-        "   Klienci.nazwisko as nazwisko_klienta, "
-        "   Naliczone_oplaty.oplata as oplata "
-        "FROM Naliczone_oplaty "
-        "JOIN Wypożyczenia ON Naliczone_oplaty.wypozyczenia_id = Wypożyczenia.id "
-        "JOIN Klienci ON Wypożyczenia.klienci_id = Klienci.id "
-        "WHERE Naliczone_oplaty.czy_oplacone == 0;"
-        "CREATE TRIGGER auto_generate_card_id "
-        "AFTER INSERT ON klienci "
-        "BEGIN "
-        "UPDATE klienci "
-        "SET nr_karty = (SELECT value FROM nr_karty_losowy WHERE Field1 = 1) "
-        "WHERE id = NEW.id;"
-        "UPDATE nr_karty_losowy "
-        "SET value = value + 1 "
-        "WHERE Field1 = 1;"
-        "END"
-        ;
+            "CREATE TABLE IF NOT EXISTS \"Klienci\" ("
+            "\"id\" integer primary key NOT NULL UNIQUE,"
+            "\"imie\" VARCHAR(50) NOT NULL,"
+            "\"nazwisko\" VARCHAR(50) NOT NULL,"
+            "\"adres\" VARCHAR(100) NOT NULL,"
+            "\"nr_telefonu\" VARCHAR(9) NOT NULL UNIQUE,"
+            "\"email\" TEXT UNIQUE,"
+            "\"nr_karty\" INTEGER(6) UNIQUE,"
+            "CHECK ("
+            "email LIKE '%_@_%._%' AND "
+            "LENGTH(email) - LENGTH(REPLACE(email, '@', '')) = 1 AND "
+            "SUBSTR(LOWER(email), 1, INSTR(email, '.') - 1) NOT GLOB '*[^@0-9a-z]*' AND "
+            "SUBSTR(LOWER(email), INSTR(email, '.') + 1) NOT GLOB '*[^a-z]*'"
+            "),"
+            "CHECK ("
+            "LENGTH (nr_telefonu) = 9"
+            "),"
+            "CHECK ("
+            "LENGTH (nr_karty) = 6"
+            "));"
+
+            "CREATE TABLE IF NOT EXISTS \"Wypożyczenia\" ("
+            "\"id\" INTEGER NOT NULL,"
+            "\"klienci_id\" INTEGER NOT NULL,"
+            "\"ksiazki_id\" INTEGER NOT NULL,"
+            "\"data_wydania\" DATETIME NOT NULL,"
+            "\"data_zwrotu\" DATETIME NOT NULL,"
+            "\"termin_oddania\" DATETIME NOT NULL,"
+            "FOREIGN KEY(\"klienci_id\") REFERENCES \"Klienci\"(\"id\"),"
+            "FOREIGN KEY(\"ksiazki_id\") REFERENCES \"Ksiazki\"(\"id\"));"
+
+            "CREATE TABLE IF NOT EXISTS \"Gatunki\" ("
+            "\"id\" integer NOT NULL,"
+            "\"gatunek\" TEXT NOT NULL UNIQUE,"
+            "PRIMARY KEY(\"id\"));"
+
+            "CREATE TABLE IF NOT EXISTS \"Autorzy\" ("
+            "\"id\" integer NOT NULL,"
+            "\"name\" TEXT NOT NULL UNIQUE,"
+            "PRIMARY KEY(\"id\"));"
+
+            "CREATE TABLE IF NOT EXISTS \"nr_karty_losowy\" ("
+            "\"Field1\" INTEGER,"
+            "\"value\" INTEGER NOT NULL,"
+            "PRIMARY KEY(\"Field1\" AUTOINCREMENT));"
+
+            "CREATE TABLE IF NOT EXISTS \"Ksiazki\" ("
+            "\"opis\" TEXT,"
+            "\"id\" INTEGER,"
+            "\"tytul\" TEXT NOT NULL,"
+            "\"autorzy_id\" INTEGER NOT NULL,"
+            "\"czy_wypozyczone\" INTEGER NOT NULL,"
+            "\"rok_wydania\" INTEGER NOT NULL,"
+            "\"gatunek_id\" INTEGER NOT NULL,"
+            "\"liczba_wypozyczen\" INTEGER,"
+            "FOREIGN KEY(\"autorzy_id\") REFERENCES \"Autorzy\"(\"id\"),"
+            "FOREIGN KEY(\"gatunek_id\") REFERENCES \"Gatunki\"(\"id\"),"
+            "PRIMARY KEY(\"id\" AUTOINCREMENT));"
+
+            "CREATE VIEW IF NOT EXISTS W_Ksiazki AS "
+            "SELECT Ksiazki.id AS id,"
+            "Ksiazki.tytul AS tytul,"
+            "Autorzy.name AS Autor,"
+            "Ksiazki.rok_wydania AS rok_wydania,"
+            "Gatunki.gatunek AS gatunek,"
+            "Ksiazki.czy_wypozyczone AS czy_wypozyczone,"
+            "count(Ksiazki.tytul) AS ilosc_egzemplarzy "
+            "FROM Ksiazki "
+            "JOIN Autorzy ON Ksiazki.autorzy_id = Autorzy.id "
+            "JOIN Gatunki ON Ksiazki.gatunek_id = Gatunki.id "
+            "GROUP BY Ksiazki.tytul;";
 
      rc = sqlite3_exec(Db, sqlCreateTables, 0, 0, &zErrMsg);
         if (rc != SQLITE_OK) {
@@ -193,5 +151,54 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
     return true;
 }
 
+type database::clientDataHandler(int column,int ID){
+
+
+    type tmp{0,"\0"};
+    if(ID ==-1){                                                    //przypadek dla sytuacji gdy musimy pobrać brakujące dane do tabeli po utworzeniu rekordu
+        sqlite3_stmt* stmtID = nullptr;                             //ID i Numer Karty są generowane dla nowego rekordu w bazie danych i nie są podawane przez użytkownika
+        const char* findID = "SELECT MAX(id) FROM Klienci";         //żeby uniknąć ponownego ClientTableModel::setdatalist() pobierasz MAX(id)
+        qDebug() << sqlite3_prepare_v2(Db,findID,-1,&stmtID,NULL);              //najnowszy rekord zawsze posiada MAX(id)
+        sqlite3_step(stmtID);
+        int ID = sqlite3_column_int(stmtID,clientColumn::ID);
+
+        sqlite3_stmt* stmt = nullptr;
+        const char* CardNum = "SELECT * FROM Klienci WHERE id=\"?\"";
+        qDebug() << sqlite3_prepare_v2(Db,CardNum,-1,&stmt,NULL);
+        sqlite3_bind_int(stmt,1,ID);
+        sqlite3_step(stmt);
+        if(column == clientColumn::ID||column==clientColumn::CARD_NUM){
+            tmp.integer = sqlite3_column_int(stmt,column);
+        }
+        else{
+            tmp.string = (char*)sqlite3_column_text(stmt,column);
+        }
+
+    }
+    return tmp;
+}
+QVector<Clients> database::setDataList(){
+    QVector<Clients> datalist;
+    const char* sql = "SELECT * FROM Klienci;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(Db,sql,-1,&stmt,NULL);
+    if (rc != SQLITE_OK) {
+        qDebug()<< sqlite3_errmsg(Db);
+    }
+    while ((sqlite3_step(stmt)) == SQLITE_ROW){
+        Clients tmp;
+
+        tmp.ClientID = sqlite3_column_int(stmt,0);
+        tmp.Imie =(char*)sqlite3_column_text(stmt,1);
+        tmp.Nazwisko =(char*)sqlite3_column_text(stmt,2);
+        tmp.Adres =(char*)sqlite3_column_text(stmt,3);
+        tmp.NumerTelefonu = sqlite3_column_int(stmt,4);
+        tmp.Email=(char*)sqlite3_column_text(stmt,5);
+        tmp.NumerKarty =sqlite3_column_int(stmt,6);
+        datalist.append(tmp);
+    }
+    qDebug()<<".count():"<<datalist.count();
+    return datalist;
+}
 
 

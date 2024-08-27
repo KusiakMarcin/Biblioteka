@@ -2,6 +2,8 @@
 #define ADDCLIENTELEMENT_H
 #include "Headers/database.h"
 #include <QDialog>
+#include "Headers/Clients.h"
+#include "Headers/database.h"
 namespace Ui {class addclientelement;}
 
 class addclientelement : public QDialog
@@ -11,6 +13,8 @@ class addclientelement : public QDialog
 public:
     explicit addclientelement(database *Db,QWidget *parent = nullptr);
     ~addclientelement();
+signals:
+    void submitInput(Clients input);
 
 private slots:
     void on_pushButton_dodajKlienta_2_clicked();
@@ -19,6 +23,7 @@ private slots:
 
 private:
     Ui::addclientelement *ui;
+    Clients Client;
     database *Db;
 };
 

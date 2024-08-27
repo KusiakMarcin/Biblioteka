@@ -3,15 +3,26 @@
 #include "sqlite3.h"
 #include <QString>
 #include <QVector>
+#include "Headers/Clients.h"
+
+struct type {
+    int integer;
+    QString string;
+};
 
 class database{
-public:
+private:
     sqlite3 *Db;
+
+
+public:
+
     database();
     ~database();
     bool initDatabase();
     bool addNewClient(const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
-
+    QVector<Clients> setDataList();
+    type clientDataHandler(int column,int ID);
 
 };
 

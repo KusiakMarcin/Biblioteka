@@ -5,7 +5,10 @@
 #include "Headers/RentalsTableModel.h"
 #include "Headers/database.h"
 #include <QMainWindow>
-
+#include "QTableView"
+#include "addclientelement.h"
+#include "addbookelement.h"
+#include <QSortFilterProxyModel>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -15,24 +18,40 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    database *Db = new database;
     MainWindow(QWidget *parent = nullptr);
+    void setupClientTable();
+    void setupBookTable();
     ~MainWindow();
 
 
+
 public slots:
-    int isClientTable(database *Db);
-    int isBooksTable();
+
     int isRentalTable();
+
     //int addClientTable();
     //int addBooksTable();
 
 private slots:
 
-
-    void on_addclient_clicked();
+    bool updateSelectedClient(const QModelIndex &current,const QModelIndex &previous);
+    bool updateSelectedBook(const QModelIndex &current,const QModelIndex &previous);
+    void addClientDialog();
+    void addBookDialog();
 
 private:
     Ui::MainWindow *ui;
+    database *Db = new database;                            //strumien do bazy danych
+    ClientTableModel *ClientModel = new ClientTableModel(Db);
+    QTableView *ClientTable = new QTableView(this);
+    addclientelement *dialogClient = new addclientelement(Db, this);
+    addbookelement *dialogBook = new addbookelement(Db,this);
+    BooksTableModel *BookModel = new BooksTableModel;
+    QTableView *BooksTable = new QTableView(this);
+    RentalsTableModel *RentalModel = new RentalsTableModel;
+    QTableView *RentalTable = new QTableView(this);
+    QModelIndex SelectedClient;
+    QModelIndex SelectedBook;
+    QModelIndex SelectedRental;
 };
 #endif // MAINWINDOW_H
