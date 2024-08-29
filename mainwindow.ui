@@ -255,9 +255,6 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="IsCLientVisible">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="enabled">
     <bool>true</bool>
    </property>

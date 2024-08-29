@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>removeClientElement</class>
- <widget class="QDialog" name="removeClientElement">
+ <class>RemoveClientElement</class>
+ <widget class="QDialog" name="RemoveClientElement">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>386</width>
-    <height>183</height>
+    <width>400</width>
+    <height>219</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,22 +16,18 @@
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>50</x>
      <y>30</y>
      <width>301</width>
-     <height>131</height>
+     <height>161</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="labelInfo">
       <property name="text">
-       <string>Potwierdź usunięcie tego klienta o ID:   
-
-Imie i Nazwisko</string>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
+       <string>Czy na pewno usunąć klienta o ID: 
+\</string>
       </property>
      </widget>
     </item>

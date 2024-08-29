@@ -19,8 +19,6 @@ signals:
 private slots:
     void on_pushButton_dodajKlienta_2_clicked();
 
-    //void on_pushButton_dodajKlienta_2_clicked();
-
 private:
     Ui::addclientelement *ui;
     Clients Client;

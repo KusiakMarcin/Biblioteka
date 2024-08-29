@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "removeclientelement.h"
 #include "ui_mainwindow.h"
 #include <QItemSelectionModel>
 #include <QMessageBox>
@@ -47,37 +46,6 @@ int MainWindow::isRentalTable(){
 
 }
 
-void MainWindow::removeClientDialog() {
-    if (!SelectedClient.isValid()) {
-        qDebug() << "No client selected.";
-        return;
-    }
-
-    int clientID = SelectedClient.sibling(SelectedClient.row(), 0).data().toInt();
-    QString clientName = SelectedClient.sibling(SelectedClient.row(), 1).data().toString();
-    QString clientSurname = SelectedClient.sibling(SelectedClient.row(), 2).data().toString();
-    QString clientAddress = SelectedClient.sibling(SelectedClient.row(), 3).data().toString();
-    int clientPhone = SelectedClient.sibling(SelectedClient.row(), 4).data().toInt();
-    QString clientEmail = SelectedClient.sibling(SelectedClient.row(), 5).data().toString();
-
-    Clients client;
-    client.ClientID = clientID;
-    client.Imie = clientName;
-    client.Nazwisko = clientSurname;
-    client.Adres = clientAddress;
-    client.NumerTelefonu = clientPhone;
-    client.Email = clientEmail;
-
-    RemoveClientElement dialog(this, client);
-    if (dialog.exec() == QDialog::Accepted && dialog.isConfirmed()) {
-        if (Db->removeClient(client.ClientID)) {
-            qDebug() << "Client removed successfully.";
-        } else {
-            qDebug() << "Failed to remove client.";
-        }
-    }
-}
-
 MainWindow::~MainWindow(){
     delete ui;
     delete Db;
@@ -93,10 +61,30 @@ MainWindow::~MainWindow(){
 }
 
 bool MainWindow::updateSelectedClient(const QModelIndex &current,const QModelIndex &previous){
+
+    if (!current.isValid()) return false;
     SelectedClient = current;
     qDebug()<<SelectedClient;
-    if(SelectedClient!=previous) return 1;
-    else return 0;
+    /*int row = current.row();
+    SelectedClientData.ClientID = ClientModel->data(ClientModel->index(row, 0)).toInt();
+    SelectedClientData.Imie = ClientModel->data(ClientModel->index(row, 1)).toString();
+    SelectedClientData.Nazwisko = ClientModel->data(ClientModel->index(row, 2)).toString();
+    SelectedClientData.Adres = ClientModel->data(ClientModel->index(row, 3)).toString();
+    SelectedClientData.NumerTelefonu = ClientModel->data(ClientModel->index(row, 4)).toInt();
+    SelectedClientData.Email = ClientModel->data(ClientModel->index(row, 5)).toString();
+    qDebug() << "Selected Client ID:" << SelectedClientData.ClientID;*/
+    //if(SelectedClient!=previous)
+    int clientId = ClientModel->data(ClientModel->index(current.row(), 0)).toInt();
+    SelectedClientData.ClientID = clientId;
+    SelectedClientData.Imie = ClientModel->data(ClientModel->index(current.row(), 1)).toString();
+    SelectedClientData.Nazwisko = ClientModel->data(ClientModel->index(current.row(), 2)).toString();
+    SelectedClientData.Adres = ClientModel->data(ClientModel->index(current.row(), 3)).toString();
+    SelectedClientData.NumerTelefonu = ClientModel->data(ClientModel->index(current.row(), 4)).toInt();
+    SelectedClientData.Email = ClientModel->data(ClientModel->index(current.row(), 5)).toString();
+    qDebug() << "Selected Client ID:" << SelectedClientData.ClientID;
+    if (SelectedClient != previous) return true;
+    return false;
+    //    return true;
 
 }
 
@@ -115,4 +103,15 @@ void MainWindow::addClientDialog(){
 
 void MainWindow::addBookDialog(){
     dialogBook->show();
+}
+
+void MainWindow::removeClientDialog()
+{
+    if (!SelectedClient.isValid()) return;
+
+    RemoveClientElement dialog(this, SelectedClientData);
+    if (dialog.exec() == QDialog::Accepted && dialog.isConfirmed()) {
+        int row = SelectedClient.row();
+        ClientModel->deleteElement(row);
+    }
 }

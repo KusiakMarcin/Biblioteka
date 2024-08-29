@@ -1,8 +1,9 @@
 #ifndef REMOVECLIENTELEMENT_H
 #define REMOVECLIENTELEMENT_H
-#include "Headers/database.h"
+
 #include <QDialog>
 #include "Headers/Clients.h"
+#include "Headers/database.h"
 
 namespace Ui {
 class RemoveClientElement;
@@ -19,11 +20,13 @@ public:
     bool isConfirmed() const;
 
 private slots:
-    void onConfirm();
-    void onCancel();
+    void on_ButtonConfirm_clicked();
+    void on_ButtonCancel_clicked();
 
 private:
     Ui::RemoveClientElement *ui;
+    database* Db;
+    Clients clientData;
     bool confirmed;
 };
 

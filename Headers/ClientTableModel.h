@@ -14,6 +14,8 @@ class ClientTableModel : public QAbstractTableModel{
 
     Q_OBJECT
     QVector<Clients> datalist;
+
+    database *Db;
 public:
 
     ClientTableModel(database *Db, QObject *parent = nullptr);
@@ -25,7 +27,7 @@ public:
 public slots:
     //void addElement(Clients input);
 
-//    void deleteElement();
+    void deleteElement(int row);
 signals:
     void dataUpdated();
 };

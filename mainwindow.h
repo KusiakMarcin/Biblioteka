@@ -39,7 +39,6 @@ private slots:
     bool updateSelectedBook(const QModelIndex &current,const QModelIndex &previous);
     void addClientDialog();
     void addBookDialog();
-
     void removeClientDialog();
 
 private:
@@ -49,7 +48,7 @@ private:
     QTableView *ClientTable = new QTableView(this);
     addclientelement *dialogClient = new addclientelement(Db, this);
     addbookelement *dialogBook = new addbookelement(Db,this);
-  //  RemoveClientElement *dialogRemoveClient = new RemoveClientElement;
+    RemoveClientElement *dialogRemoveClient = new RemoveClientElement;
     BooksTableModel *BookModel = new BooksTableModel;
     QTableView *BooksTable = new QTableView(this);
     RentalsTableModel *RentalModel = new RentalsTableModel;
@@ -57,5 +56,6 @@ private:
     QModelIndex SelectedClient;
     QModelIndex SelectedBook;
     QModelIndex SelectedRental;
+    Clients SelectedClientData;
 };
 #endif // MAINWINDOW_H

@@ -1,5 +1,6 @@
 #include "Headers/ClientTableModel.h"
 #include "Headers/Clients.h"
+#include "Headers/database.h"
 #include <QDebug>
 
 
@@ -58,15 +59,24 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
     return QVariant();
 }
 
+void ClientTableModel::deleteElement(int row) {
+    if (row < 0 || row >= datalist.size())
+        return;
+
+    beginRemoveRows(QModelIndex(), row, row);
+    Clients clientToDelete = datalist.at(row);
+    if (Db->removeClient(clientToDelete.ClientID)) {
+        datalist.removeAt(row);
+    } else {
+        qDebug() << "Failed to remove client with ID:" << clientToDelete.ClientID;
+    }
+
+    endRemoveRows();
+}
+
 //void ClientTableModel::addElement(Clients input){
 
 //bool insertRows(int row, int count, const QModelIndex &parent){
 
 //    return true;
-//}
-
-
-////void ClientTableModel::deleteElement(){
-
-
 //}

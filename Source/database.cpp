@@ -15,9 +15,6 @@ database::~database() {
 
 bool database::initDatabase(){
 
-
-    //sqlite3 *Db; to jest zadeklarowane w database.h, w ten sposob przeciazasz(chyba) i korzystasz ze strumienia w funkcji a ten zadeklarowany w obiekcie zostaje
-    //              niezainicjalizowany i nie da sie z niego korzystac
     const char *filename = "data.db";
     char *zErrMsg = 0;
     int rc;
@@ -147,7 +144,7 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
 }
 
 bool database::removeClient(const int ClientID){
-    const char* deleteQuery = "DELETE FROM clients WHERE id = ?;";
+    const char* deleteQuery = "DELETE FROM Klienci WHERE id = ?;";
     sqlite3_stmt* stmtRemoveClient;
     if (sqlite3_prepare_v2(Db, deleteQuery, -1, &stmtRemoveClient, nullptr) != SQLITE_OK) {
         qDebug() << "Failed to prepare delete statement:" << sqlite3_errmsg(Db);
