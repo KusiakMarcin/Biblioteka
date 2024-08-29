@@ -37,6 +37,8 @@ private slots:
     bool updateSelectedClient(const QModelIndex &current,const QModelIndex &previous);
     bool updateSelectedBook(const QModelIndex &current,const QModelIndex &previous);
     void addClientDialog();
+    void addClient();
+    void deleteClient();
     void addBookDialog();
 
 private:
@@ -53,5 +55,6 @@ private:
     QModelIndex SelectedClient;
     QModelIndex SelectedBook;
     QModelIndex SelectedRental;
+    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel;
 };
 #endif // MAINWINDOW_H

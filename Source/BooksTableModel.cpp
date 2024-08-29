@@ -47,31 +47,31 @@ QVariant BooksTableModel::headerData(int section, Qt::Orientation orientation, i
     }
     return QVariant();
 }
-void BooksTableModel::setDataList(database *Db){
+//void BooksTableModel::setDataList(database *Db){
 
-    const char* sql = "SELECT * FROM Ksiazki;";
-    sqlite3_stmt* stmt;
-    int rc = sqlite3_prepare_v2(Db->Db,sql,-1,&stmt,NULL);
-    if (rc != SQLITE_OK) {
-        qDebug()<< sqlite3_errmsg(Db->Db);
-    }
-    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
-        QVector<QString>tmp;
-        tmp.append(QString(sqlite3_column_int(stmt,0)));
-        tmp.append((char*)sqlite3_column_text(stmt,1));
-        tmp.append((char*)sqlite3_column_text(stmt,2));
-        tmp.append((char*)sqlite3_column_text(stmt,3));
-        tmp.append(QString(sqlite3_column_int(stmt,4)));
-        tmp.append((char*)sqlite3_column_text(stmt,5));
-        tmp.append(QString(sqlite3_column_int(stmt,6)));
-
-
-        datalist.append(tmp);
-    }
-    qDebug()<<".count():"<<datalist.count();
+//    const char* sql = "SELECT * FROM Ksiazki;";
+//    sqlite3_stmt* stmt;
+//    int rc = sqlite3_prepare_v2(Db->Db,sql,-1,&stmt,NULL);
+//    if (rc != SQLITE_OK) {
+//        qDebug()<< sqlite3_errmsg(Db->Db);
+//    }
+//    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
+//        QVector<QString>tmp;
+//        tmp.append(QString(sqlite3_column_int(stmt,0)));
+//        tmp.append((char*)sqlite3_column_text(stmt,1));
+//        tmp.append((char*)sqlite3_column_text(stmt,2));
+//        tmp.append((char*)sqlite3_column_text(stmt,3));
+//        tmp.append(QString(sqlite3_column_int(stmt,4)));
+//        tmp.append((char*)sqlite3_column_text(stmt,5));
+//        tmp.append(QString(sqlite3_column_int(stmt,6)));
 
 
-}
+//        datalist.append(tmp);
+//    }
+//    qDebug()<<".count():"<<datalist.count();
+
+
+//}
 void BooksTableModel::addElement(){
 
 

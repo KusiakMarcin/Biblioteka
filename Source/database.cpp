@@ -153,8 +153,7 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
 
 type database::clientDataHandler(int column,int ID){
 
-
-    type tmp{0,"\0"};
+    type tmp;
     if(ID ==-1){                                                    //przypadek dla sytuacji gdy musimy pobrać brakujące dane do tabeli po utworzeniu rekordu
         sqlite3_stmt* stmtID = nullptr;                             //ID i Numer Karty są generowane dla nowego rekordu w bazie danych i nie są podawane przez użytkownika
         const char* findID = "SELECT MAX(id) FROM Klienci";         //żeby uniknąć ponownego ClientTableModel::setdatalist() pobierasz MAX(id)
@@ -163,11 +162,12 @@ type database::clientDataHandler(int column,int ID){
         int ID = sqlite3_column_int(stmtID,clientColumn::ID);
 
         sqlite3_stmt* stmt = nullptr;
-        const char* CardNum = "SELECT * FROM Klienci WHERE id=\"?\"";
+        const char* CardNum = "SELECT * FROM Klienci WHERE id=?";
         qDebug() << sqlite3_prepare_v2(Db,CardNum,-1,&stmt,NULL);
         sqlite3_bind_int(stmt,1,ID);
         sqlite3_step(stmt);
         if(column == clientColumn::ID||column==clientColumn::CARD_NUM){
+
             tmp.integer = sqlite3_column_int(stmt,column);
         }
         else{
@@ -175,6 +175,7 @@ type database::clientDataHandler(int column,int ID){
         }
 
     }
+    qDebug();
     return tmp;
 }
 QVector<Clients> database::setDataList(){
@@ -199,6 +200,26 @@ QVector<Clients> database::setDataList(){
     }
     qDebug()<<".count():"<<datalist.count();
     return datalist;
+}
+
+bool database::removeClient(int ClientID){
+    const char* deleteQuery = "DELETE FROM KLienci WHERE id = ?;";
+    sqlite3_stmt* stmtRemoveClient;
+    if (sqlite3_prepare_v2(Db, deleteQuery, -1, &stmtRemoveClient, nullptr) != SQLITE_OK) {
+        qDebug() << "Failed to prepare delete statement:" << sqlite3_errmsg(Db);
+        return false;
+    }
+
+    sqlite3_bind_int(stmtRemoveClient, 1, ClientID);
+
+    if (sqlite3_step(stmtRemoveClient) != SQLITE_DONE) {
+        qDebug() << "Failed to execute delete statement:" << sqlite3_errmsg(Db);
+        sqlite3_finalize(stmtRemoveClient);
+        return false;
+    }
+
+    sqlite3_finalize(stmtRemoveClient);
+    return true;
 }
 
 

@@ -26,6 +26,7 @@ void addclientelement::on_pushButton_dodajKlienta_2_clicked(){
         Client.NumerKarty = Db->clientDataHandler(clientColumn::CARD_NUM,-1).integer;
         QMessageBox::information(this, "Information", "Record inserted successfully.");
         emit submitInput(Client);
+        emit submitedClient();
     } else {
         QMessageBox::critical(this, "Error", "Failed to insert record into database.");
     }

@@ -7,14 +7,17 @@ ClientTableModel::ClientTableModel(database *Db, QObject *parent)
     : QAbstractTableModel(parent)
 {
     datalist = Db->setDataList();
+    Data = Db;
+
 }
 
 int ClientTableModel::rowCount(const QModelIndex &parent)const{
-
+    if(parent.isValid()) return 0;
     return datalist.size();
 }
 
 int ClientTableModel::columnCount(const QModelIndex &parent)const{
+    if(parent.isValid())return 0;
     return 7;
 }
 
@@ -57,16 +60,16 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
     }
     return QVariant();
 }
+void ClientTableModel::resetModel() {
+    beginResetModel();
+    datalist.clear();
+    datalist = Data->setDataList();
+    endResetModel();
 
-//void ClientTableModel::addElement(Clients input){
-
-//bool insertRows(int row, int count, const QModelIndex &parent){
-
-//    return true;
-//}
-
-
-////void ClientTableModel::deleteElement(){
+}
 
 
-//}
+
+
+
+

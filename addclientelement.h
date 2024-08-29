@@ -15,6 +15,7 @@ public:
     ~addclientelement();
 signals:
     void submitInput(Clients input);
+    void submitedClient();
 
 private slots:
     void on_pushButton_dodajKlienta_2_clicked();
