@@ -3,7 +3,7 @@
 #include <iostream>
 #include <QString>
 
-enum clientColumn{ID,NAME,LASTNAME,ADRESS,PHONE_NUM,EMAIL,CARD_NUM};
+//enum clientColumn{ID,NAME,LASTNAME,ADRESS,PHONE_NUM,EMAIL,CARD_NUM};
 
 struct Clients{
         int ClientID;

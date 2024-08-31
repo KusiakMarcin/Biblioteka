@@ -14,8 +14,11 @@ MainWindow::MainWindow(QWidget *parent)
     setupClientTable();
     setupBookTable();
     connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
-
+    connect(ui->clientedit,&QPushButton::clicked,this,&MainWindow::editClientDialog);
+    connect(ui->clientdelete,&QPushButton::clicked,this,&MainWindow::deleteClient);
+    connect(ui->bookdelete,&QPushButton::clicked,this,&MainWindow::deleteBook);
     isRentalTable();
+    setStatusBar(nullptr);
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
 
 }
@@ -23,26 +26,30 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::setupClientTable(){
 
-    proxyModel->setSourceModel(ClientModel);
-    proxyModel->setFilterKeyColumn(-1);
-    proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    connect(ui->clientSerach, &QLineEdit::textChanged,proxyModel,&QSortFilterProxyModel::setFilterFixedString);
-    ClientTable->setModel(proxyModel);
+    proxyModelClient->setSourceModel(ClientModel);
+    proxyModelClient->setFilterKeyColumn(-1);
+    proxyModelClient->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    connect(ui->clientSerach, &QLineEdit::textChanged,proxyModelClient,&QSortFilterProxyModel::setFilterFixedString);
+    ClientTable->setModel(proxyModelClient);
     ClientTable->setSortingEnabled(true);
     ClientTable->resizeColumnsToContents();
     ui->clientLayout->addWidget(ClientTable);
-    connect(ClientTable->selectionModel(),&QItemSelectionModel::currentChanged,this,&MainWindow::updateSelectedClient);
-    connect(ui->clientdelete,&QPushButton::clicked,this,&MainWindow::deleteClient);
-    connect(dialogClient,&addclientelement::submitedClient,this,&MainWindow::addClient);
+
+    connect(dialogAddClient,&addclientelement::submitedClient,this,&MainWindow::resetClient);
 
 
 }
 
 void MainWindow::setupBookTable(){
 
-    BooksTable->setModel(BookModel);
+    proxyModelBook->setSourceModel(BookModel);
+    proxyModelBook->setFilterKeyColumn(-1);
+    proxyModelBook->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    connect(ui->bookSearch, &QLineEdit::textChanged,proxyModelBook,&QSortFilterProxyModel::setFilterFixedString);
+    BooksTable->setModel(proxyModelBook);
+    BooksTable->setSortingEnabled(true);
+    BooksTable->resizeColumnsToContents();
     ui->bookLayout->addWidget(BooksTable);
-    connect(BooksTable->selectionModel(),&QItemSelectionModel::currentChanged,this,&MainWindow::updateSelectedBook);
 }
 
 int MainWindow::isRentalTable(){
@@ -65,7 +72,7 @@ MainWindow::~MainWindow(){
     delete BooksTable;
     delete RentalModel;
     delete RentalTable;
-    delete dialogClient;
+    delete dialogAddClient;
     delete dialogBook;
 
 }
@@ -95,17 +102,28 @@ void MainWindow::deleteClient(){
     ClientModel->resetModel();
 
 }
+void MainWindow::deleteBook(){
+    int ID = ui->bookDelete->text().toInt();
+    Db->removeBook(ID);
+    BookModel->resetModel();
 
-
-
-void MainWindow::addClientDialog(){
-    dialogClient->show();
-    //ClientTable->setSortingEnabled(false);
 }
-void MainWindow::addClient(){
-    //ClientTable->setSortingEnabled(true);
+
+
+void MainWindow::editClientDialog(){
+    ClientModel->findClient(ui->clientEdit->text().toInt());
+    dialogEditClient->show();
+}
+void MainWindow::addClientDialog(){
+    dialogAddClient->show();
+
+}
+void MainWindow::resetClient(){
+
     ClientModel->resetModel();
 }
+
+
 
 void MainWindow::addBookDialog(){
     dialogBook->show();

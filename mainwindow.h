@@ -4,6 +4,7 @@
 #include "Headers/BooksTableModel.h"
 #include "Headers/RentalsTableModel.h"
 #include "Headers/database.h"
+#include "editclient.h"
 #include <QMainWindow>
 #include "QTableView"
 #include "addclientelement.h"
@@ -37,8 +38,10 @@ private slots:
     bool updateSelectedClient(const QModelIndex &current,const QModelIndex &previous);
     bool updateSelectedBook(const QModelIndex &current,const QModelIndex &previous);
     void addClientDialog();
-    void addClient();
+    void editClientDialog();
+    void resetClient();
     void deleteClient();
+    void deleteBook();
     void addBookDialog();
 
 private:
@@ -46,15 +49,18 @@ private:
     database *Db = new database;                            //strumien do bazy danych
     ClientTableModel *ClientModel = new ClientTableModel(Db);
     QTableView *ClientTable = new QTableView(this);
-    addclientelement *dialogClient = new addclientelement(Db, this);
+    addclientelement *dialogAddClient = new addclientelement(Db, this);
+    editclient *dialogEditClient = new editclient(Db,this);
     addbookelement *dialogBook = new addbookelement(Db,this);
-    BooksTableModel *BookModel = new BooksTableModel;
+    BooksTableModel *BookModel = new BooksTableModel(Db,this);
     QTableView *BooksTable = new QTableView(this);
     RentalsTableModel *RentalModel = new RentalsTableModel;
     QTableView *RentalTable = new QTableView(this);
     QModelIndex SelectedClient;
     QModelIndex SelectedBook;
     QModelIndex SelectedRental;
-    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel;
+    QSortFilterProxyModel *proxyModelClient = new QSortFilterProxyModel;
+    QSortFilterProxyModel *proxyModelBook = new QSortFilterProxyModel;
+    QSortFilterProxyModel *proxyModelRental = new QSortFilterProxyModel;
 };
 #endif // MAINWINDOW_H

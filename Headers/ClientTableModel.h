@@ -29,8 +29,9 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation,int role)const override;
     void resetModel();
 
-public slots:
 
+public slots:
+    Clients* findClient(int ID/*int left,int right*/);
 
 //    void deleteElement();
 signals:

@@ -10,7 +10,7 @@ int RentalsTableModel::rowCount(const QModelIndex &parent)const {
 }
 int RentalsTableModel::columnCount(const QModelIndex &parent) const{
 
-    return 4;
+    return 5;
 }
 QVariant RentalsTableModel::data(const QModelIndex &index, int role) const {
 
@@ -20,12 +20,14 @@ QVariant RentalsTableModel::headerData(int section, Qt::Orientation orientation,
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
         switch (section) {
         case 0:
-            return QString("ID Klienta");
+            return QString("ID");
         case 1:
-            return QString("ID Książki");
+            return QString("ID Klienta");
         case 2:
-            return QString("Data Wypożyczenia");
+            return QString("ID Książki");
         case 3:
+            return QString("Data Wypożyczenia");
+        case 4:
             return QString("Data Zwrotu");
 
         }

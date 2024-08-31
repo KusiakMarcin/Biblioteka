@@ -9,17 +9,18 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Source/Books.cpp \
     Source/BooksTableModel.cpp \
     Source/ClientTableModel.cpp \
     Source/Clients.cpp \
     Source/Rentals.cpp \
     Source/RentalsTableModel.cpp \
+    Source/comboBox.cpp \
     Source/database.cpp \
     Source/sqlite3.c \
     addbookelement.cpp \
     addclientelement.cpp \
     createrental.cpp \
+    editclient.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -32,17 +33,20 @@ HEADERS += \
     Headers/Clients.h \
     Headers/Rentals.h \
     Headers/RentalsTableModel.h \
+    Headers/comboBox.h \
     Headers/database.h \
     Headers/sqlite3.h \
     addbookelement.h \
     addclientelement.h \
     createrental.h \
+    editclient.h \
     mainwindow.h
 
 FORMS += \
     addbookelement.ui \
     addclientelement.ui \
     createrental.ui \
+    editclient.ui \
     mainwindow.ui
 
 # Default rules for deployment.

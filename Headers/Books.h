@@ -1,27 +1,16 @@
 #ifndef BOOKS_H
 #define BOOKS_H
 #include <iostream>
-
-class Books{
-
-private:
+#include <QString>
+//enum bookcolumn{}
+struct Books{
     int BookID;
-    std::string Tytul;
-    int AutorID;
-    int IloscEgzemplarzy;
+    QString Title;
+    QString Author;
     int RokWydania;
-    int GatunekID;
-    int LiczbaWypozyczen;
-
-public:
-    Books(int id, std::string, int autor_id,int ilosc_egzemplarzy,int rok_wydania,int gatunek_id,int liczba_wypozyczen);
-    //DeleteField();
-    //DeleteElement
-    //CreateElement
-    //CreateField();
-    ~Books();
-
-
+    QString Genre;
+    int NumberRented;
+    int Stock;
 };
 
-#endif BOOKS_H //
+#endif //BOOKS_H
