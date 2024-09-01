@@ -19,8 +19,7 @@ database::~database() {
 bool database::initDatabase(){
 
 
-    //sqlite3 *Db; to jest zadeklarowane w database.h, w ten sposob przeciazasz(chyba) i korzystasz ze strumienia w funkcji a ten zadeklarowany w obiekcie zostaje
-    //              niezainicjalizowany i nie da sie z niego korzystac
+
     const char *filename = "data.db";
     char *zErrMsg = 0;
     int rc;
@@ -163,6 +162,35 @@ bool database::addNewBook(const QString& tytul, int rokWydania , int liczbaEgzem
     return true;
 }
 
+bool database::addRental(int clientID,int bookID,QDate borrowDate, QDate returnDate){
+    sqlite3_stmt* stmt;
+    const char* sql = "INSERT INTO Wypozyczenia (id,klienci_id,ksiazki_id,data_zwrotu,data_wydania) VALUES (NULL,?,?,?,?)";
+
+    int rc = sqlite3_prepare_v2(Db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(Db));
+        return false;
+    }
+    else{
+        fprintf(stdout,"statement prepared");
+
+    }
+    sqlite3_bind_int(stmt, 1, clientID);
+    sqlite3_bind_int(stmt,2,bookID);
+    sqlite3_bind_text(stmt,3,returnDate.toString("yyyy-MM-dd").toUtf8().constData(),10,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,3,borrowDate.toString("yyyy-MM-dd").toUtf8().constData(),10,SQLITE_TRANSIENT);
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        qDebug() << "Failed to execute statement: %s\n" <<sqlite3_errmsg(Db);
+        sqlite3_finalize(stmt);
+        return false;
+    }
+    qDebug() <<"Record inserted successfully\n";
+
+    sqlite3_finalize(stmt);
+    return true;
+}
+
 bool database::editClient(const int id,const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email){
     sqlite3_stmt* stmt;
     const char* sql = "UPDATE klienci SET imie=\"?\", nazwisko=\"?\", adres=\"?\", nr_telefonu=\"?\", email=\"?\" WHERE id =?";
@@ -286,6 +314,26 @@ bool database::removeBook(int BookID){
     }
 
     sqlite3_bind_int(stmtRemoveClient, 1, BookID);
+
+    if (sqlite3_step(stmtRemoveClient) != SQLITE_DONE) {
+        qDebug() << "Failed to execute delete statement:" << sqlite3_errmsg(Db);
+        sqlite3_finalize(stmtRemoveClient);
+        return false;
+    }
+
+    sqlite3_finalize(stmtRemoveClient);
+    return true;
+}
+
+bool database::removeRental(int rentalID){
+    const char* deleteQuery = "DELETE FROM Wypozyczenia WHERE id = ?;";
+    sqlite3_stmt* stmtRemoveClient;
+    if (sqlite3_prepare_v2(Db, deleteQuery, -1, &stmtRemoveClient, nullptr) != SQLITE_OK) {
+        qDebug() << "Failed to prepare delete statement:" << sqlite3_errmsg(Db);
+        return false;
+    }
+
+    sqlite3_bind_int(stmtRemoveClient, 1, rentalID);
 
     if (sqlite3_step(stmtRemoveClient) != SQLITE_DONE) {
         qDebug() << "Failed to execute delete statement:" << sqlite3_errmsg(Db);

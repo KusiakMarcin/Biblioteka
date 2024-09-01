@@ -6,6 +6,7 @@ CreateRental::CreateRental(QWidget *parent) :
     ui(new Ui::CreateRental)
 {
     ui->setupUi(this);
+    db =Db;
 }
 
 CreateRental::~CreateRental()

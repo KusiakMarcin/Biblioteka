@@ -21,10 +21,13 @@ public:
     bool initDatabase();
     bool addNewClient(const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
     bool addNewBook(const QString& tytul, int rokWydania , int liczbaEgzemplarzy, int autor, int gatunek);
-    bool removeClient(int ClientID);
+    bool addRental(int clientID,int bookID,QDate borrowDate, QDate returnDate);
+
     bool editClient(const int id,const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
     QVector<Clients> setDataClient();
     bool removeBook(int BookID);
+    bool removeClient(int ClientID);
+    bool removeRental(int rentalID);
     QVector<Books> setDataBook();
     QVector<Rentals> setRentalList();
     QVector<QString> setDataAuthor();

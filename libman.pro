@@ -11,7 +11,6 @@ CONFIG += c++17
 SOURCES += \
     Source/BooksTableModel.cpp \
     Source/ClientTableModel.cpp \
-    Source/Clients.cpp \
     Source/RentalsTableModel.cpp \
     Source/comboBox.cpp \
     Source/database.cpp \

@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->clientdelete,&QPushButton::clicked,this,&MainWindow::deleteClient);
     connect(ui->bookadd,&QPushButton::clicked,this,&MainWindow::addBookDialog);
     connect(ui->bookdelete,&QPushButton::clicked,this,&MainWindow::deleteBook);
+    connect(ui->rentaladd,&QPushButton::clicked,this,&MainWindow::addBookDialog);
     setStatusBar(nullptr);
 
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
@@ -57,10 +58,15 @@ void MainWindow::setupBookTable(){
 
 void MainWindow::setupRentalTable(){
 
-
-    RentalTable->setModel(RentalModel);
+    proxyModelRental->setSourceModel(RentalModel);
+    proxyModelRental->setFilterKeyColumn(-1);
+    proxyModelRental->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    connect(ui->rentalSearch, &QLineEdit::textChanged,proxyModelRental,&QSortFilterProxyModel::setFilterFixedString);
+    RentalTable->setModel(proxyModelRental);
+    RentalTable->setSortingEnabled(true);
+    RentalTable->resizeColumnsToContents();
     ui->rentalLayout->addWidget(RentalTable);
-
+    //connect(dialogBook,&addbookelement::dataSubmited,this,&MainWindow::resetBook);
 }
 
 
@@ -96,10 +102,7 @@ bool MainWindow::updateSelectedBook(const QModelIndex &current,const QModelIndex
 }
 
 void MainWindow::deleteClient(){
-    qDebug()<<ClientModel->rowCount();
-    qDebug()<<"index:"<<SelectedClient.row();
     int ID = ui->clientDelete->text().toInt();
-    qDebug()<<"ID:"<<ID;
     Db->removeClient(ID);
     ClientModel->resetModel();
 
@@ -120,6 +123,14 @@ void MainWindow::addClientDialog(){
     dialogAddClient->show();
 
 }
+
+void MainWindow::addBookDialog(){
+    dialogBook->show();
+}
+
+void MainWindow::addRentalDialog(){
+    dialogRental->show();
+}
 void MainWindow::resetClient(){
 
     ClientModel->resetModel();
@@ -132,7 +143,5 @@ void MainWindow::resetBook(){
 
 
 
-void MainWindow::addBookDialog(){
-    dialogBook->show();
-}
+
 
