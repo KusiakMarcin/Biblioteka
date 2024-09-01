@@ -2,26 +2,17 @@
 #define RENTALS_H
 #include <iostream>
 #include "Books.h"
+#include <QDate>
 
+enum columns{ID,CLIENTID,BOOKID,BORROWDAY,RETURNDAY};
 
-class Rentals{
+struct Rentals{
+    int ID;
+    int clientID;
+    int bookID;
+    QDate borrowedDay;
+    QDate returnDay;
 
-private:
-    int ClientID;
-    int BookID;
-    //data wypozyczenia
-    //data zwrotu
-
-
-public:
-    Rentals();
-    //PopulateTable()
-    //CreateElement()
-    //DeleteElement()
-    //CreateElementDB()
-    //DeleteData()
-
-    ~Rentals();
 };
 
 #endif // RENTALS_H

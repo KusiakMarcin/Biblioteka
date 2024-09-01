@@ -22,13 +22,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     void setupClientTable();
     void setupBookTable();
+    void setupRentalTable();
     ~MainWindow();
 
 
 
 public slots:
 
-    int isRentalTable();
+
 
     //int addClientTable();
     //int addBooksTable();
@@ -55,7 +56,7 @@ private:
     addbookelement *dialogBook = new addbookelement(Db,this);
     BooksTableModel *BookModel = new BooksTableModel(Db,this);
     QTableView *BooksTable = new QTableView(this);
-    RentalsTableModel *RentalModel = new RentalsTableModel;
+    RentalsTableModel *RentalModel = new RentalsTableModel(Db,this);
     QTableView *RentalTable = new QTableView(this);
     QModelIndex SelectedClient;
     QModelIndex SelectedBook;

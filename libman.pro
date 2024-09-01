@@ -12,7 +12,6 @@ SOURCES += \
     Source/BooksTableModel.cpp \
     Source/ClientTableModel.cpp \
     Source/Clients.cpp \
-    Source/Rentals.cpp \
     Source/RentalsTableModel.cpp \
     Source/comboBox.cpp \
     Source/database.cpp \

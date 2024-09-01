@@ -2,7 +2,7 @@
 #include "Headers/sqlite3.h"
 #include <stdio.h>
 #include <QDebug>
-
+#include <stdlib.h>
 
 
 
@@ -64,6 +64,7 @@ bool database::initDatabase(){
             "\"data_zwrotu\" DATETIME NOT NULL,"
             "FOREIGN KEY(\"klienci_id\") REFERENCES \"Klienci\"(\"id\"),"
             "FOREIGN KEY(\"ksiazki_id\") REFERENCES \"Ksiazki\"(\"id\"));"
+            "PRIMARY KEY(\"id\" AUTOINCREMENT));"
 
             "CREATE TABLE IF NOT EXISTS \"nr_karty_losowy\" ("
             "\"Field1\" INTEGER,"
@@ -326,3 +327,23 @@ QVector<QString> database::setDataGenre(){
     return datalist;
 }
 
+QVector<Rentals> database::setRentalList(){
+    QVector<Rentals> datalist;
+    const char* querry ="select * from Wypozyczenia";
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(Db,querry,-1,&stmt,NULL);
+    if (rc != SQLITE_OK) {
+        qDebug()<< sqlite3_errmsg(Db);
+    }
+    while(sqlite3_step(stmt)==SQLITE_ROW){
+        Rentals tmp;
+        tmp.ID = sqlite3_column_int(stmt,0);
+        tmp.clientID = sqlite3_column_int(stmt,1);
+        tmp.bookID = sqlite3_column_int(stmt,2);
+        tmp.returnDay = QDate::fromString(QString((char*)sqlite3_column_text(stmt,3)),"yyyy-MM-dd");
+        tmp.borrowedDay = QDate::fromString(QString((char*)sqlite3_column_text(stmt,4)),"yyyy-MM-dd");
+        datalist.append(tmp);
+    }
+    //QDebug()<<
+    return datalist;
+}

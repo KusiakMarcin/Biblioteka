@@ -5,6 +5,7 @@
 #include <QVector>
 #include "Headers/Clients.h"
 #include "Headers/Books.h"
+#include "Headers/Rentals.h"
 
 
 
@@ -25,6 +26,7 @@ public:
     QVector<Clients> setDataClient();
     bool removeBook(int BookID);
     QVector<Books> setDataBook();
+    QVector<Rentals> setRentalList();
     QVector<QString> setDataAuthor();
     QVector<QString> setDataGenre();
    // QVector<Books> setDataBooks();
