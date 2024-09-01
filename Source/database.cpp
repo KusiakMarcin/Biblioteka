@@ -128,6 +128,40 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
     return true;
 }
 
+bool database::addNewBook(const QString& tytul, int rokWydania , int liczbaEgzemplarzy, int autor, int gatunek) {
+    sqlite3_stmt* stmt;
+    const char* sql = "INSERT INTO Ksiazki (id, tytul, autorzy_id, liczba_egzemplarzy, rok_wydania, gatunek_id, liczba_wypozyczen) VALUES (NULL, ?, ?, ?, ?, ?,0);";
+
+    int rc = sqlite3_prepare_v2(Db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(Db));
+        return false;
+    }
+    else{
+        fprintf(stdout,"statement prepared");
+
+    }
+    sqlite3_bind_text(stmt, 1, tytul.toUtf8().constData(), tytul.length(), SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, autor);
+    sqlite3_bind_int(stmt, 3, liczbaEgzemplarzy);
+    sqlite3_bind_int(stmt, 4, rokWydania);
+    sqlite3_bind_int(stmt, 5, gatunek);
+
+
+
+
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        qDebug() << "Failed to execute statement: %s\n" <<sqlite3_errmsg(this->Db);
+        sqlite3_finalize(stmt);
+        return false;
+    }
+    qDebug() <<"Record inserted successfully\n";
+
+    sqlite3_finalize(stmt);
+    return true;
+}
+
 bool database::editClient(const int id,const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email){
     sqlite3_stmt* stmt;
     const char* sql = "UPDATE klienci SET imie=\"?\", nazwisko=\"?\", adres=\"?\", nr_telefonu=\"?\", email=\"?\" WHERE id =?";
@@ -260,5 +294,35 @@ bool database::removeBook(int BookID){
 
     sqlite3_finalize(stmtRemoveClient);
     return true;
+}
+
+QVector<QString> database::setDataAuthor(){
+    QVector<QString> datalist;
+    const char* querry = "Select * from Autorzy";
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(Db,querry,-1,&stmt,NULL);
+    if(rc != SQLITE_OK){
+        qDebug()<<sqlite3_errmsg(Db);
+
+    }
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
+        datalist.append((char*)sqlite3_column_text(stmt,1));
+    }
+    return datalist;
+}
+
+QVector<QString> database::setDataGenre(){
+    QVector<QString> datalist;
+    const char* querry = "Select * from Gatunki";
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(Db,querry,-1,&stmt,NULL);
+    if(rc != SQLITE_OK){
+        qDebug()<<sqlite3_errmsg(Db);
+
+    }
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
+        datalist.append((char*)sqlite3_column_text(stmt,1));
+    }
+    return datalist;
 }
 

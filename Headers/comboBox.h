@@ -6,7 +6,7 @@
 #include <QString>
 #include <QAbstractListModel>
 
-enum table{Author=1,Genre=2};
+enum table{AUTHOR=1,GENRE=2};
 class comboBox : public QAbstractListModel
 {
 

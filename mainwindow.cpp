@@ -13,11 +13,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setupClientTable();
     setupBookTable();
+    isRentalTable();
     connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
     connect(ui->clientedit,&QPushButton::clicked,this,&MainWindow::editClientDialog);
     connect(ui->clientdelete,&QPushButton::clicked,this,&MainWindow::deleteClient);
+    connect(ui->bookadd,&QPushButton::clicked,this,&MainWindow::addBookDialog);
     connect(ui->bookdelete,&QPushButton::clicked,this,&MainWindow::deleteBook);
-    isRentalTable();
     setStatusBar(nullptr);
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
 
@@ -50,6 +51,7 @@ void MainWindow::setupBookTable(){
     BooksTable->setSortingEnabled(true);
     BooksTable->resizeColumnsToContents();
     ui->bookLayout->addWidget(BooksTable);
+    connect(dialogBook,&addbookelement::dataSubmited,this,&MainWindow::resetBook);
 }
 
 int MainWindow::isRentalTable(){
@@ -57,7 +59,6 @@ int MainWindow::isRentalTable(){
 
     RentalTable->setModel(RentalModel);
     ui->rentalLayout->addWidget(RentalTable);
-
 
 }
 
@@ -121,6 +122,11 @@ void MainWindow::addClientDialog(){
 void MainWindow::resetClient(){
 
     ClientModel->resetModel();
+}
+
+void MainWindow::resetBook(){
+
+    BookModel->resetModel();
 }
 
 

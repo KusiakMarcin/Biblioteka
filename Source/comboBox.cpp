@@ -4,12 +4,13 @@
 comboBox::comboBox(int dataMask,database *Db,QObject *parent){
 
     db=Db;
+
     switch (dataMask) {
     case 1:
-       // db->setDataAuthor();
+       datalist = db->setDataAuthor();
         break;
     case 2:
-       // db->setDataGenre();
+       datalist = db->setDataGenre();
         break;
     default:
         break;

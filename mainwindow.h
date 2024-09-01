@@ -40,6 +40,7 @@ private slots:
     void addClientDialog();
     void editClientDialog();
     void resetClient();
+    void resetBook();
     void deleteClient();
     void deleteBook();
     void addBookDialog();

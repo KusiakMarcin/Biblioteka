@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "Headers/database.h"
+#include "Headers/comboBox.h"
 
 namespace Ui {
 class addbookelement;
@@ -16,9 +17,18 @@ public:
     explicit addbookelement(database*Db, QWidget *parent = nullptr);
     ~addbookelement();
 
+public slots:
+    void addElement();
+signals:
+    void dataSubmited();
+
 private:
     Ui::addbookelement *ui;
-    database *Db;
+    database *db;
+    comboBox *authorModel;
+    comboBox *genreModel;
+
+
 };
 
 #endif // ADDBOOKELEMENT_H
