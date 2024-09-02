@@ -178,7 +178,9 @@ bool database::addRental(int clientID,int bookID,QDate borrowDate, QDate returnD
     sqlite3_bind_int(stmt, 1, clientID);
     sqlite3_bind_int(stmt,2,bookID);
     sqlite3_bind_text(stmt,3,returnDate.toString("yyyy-MM-dd").toUtf8().constData(),10,SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,3,borrowDate.toString("yyyy-MM-dd").toUtf8().constData(),10,SQLITE_TRANSIENT);
+    qDebug()<<"return"<<returnDate.toString("yyyy-MM-dd").toUtf8().constData();
+    sqlite3_bind_text(stmt,4,borrowDate.toString("yyyy-MM-dd").toUtf8().constData(),10,SQLITE_TRANSIENT);
+    qDebug()<<"borrow"<<borrowDate.toString("yyyy-MM-dd").toUtf8().constData();
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
         qDebug() << "Failed to execute statement: %s\n" <<sqlite3_errmsg(Db);

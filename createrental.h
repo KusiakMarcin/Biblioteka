@@ -1,7 +1,6 @@
 #ifndef CREATERENTAL_H
 #define CREATERENTAL_H
 #include "Headers/database.h"
-#include "Headers/Rentals.h"
 #include <QDialog>
 
 namespace Ui {
@@ -14,9 +13,12 @@ class CreateRental : public QDialog
 
 public:
     explicit CreateRental(database *Db, QWidget *parent = nullptr);
+
     ~CreateRental();
 signals:
     void dataSubmited();
+public slots:
+    bool addRental();
 private:
     Ui::CreateRental *ui;
     database *db;

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QDateEdit" name="dateEdit">
+  <widget class="QDateEdit" name="borrowDate">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -23,7 +23,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QDateEdit" name="dateEdit_2">
+  <widget class="QDateEdit" name="returnDate">
    <property name="geometry">
     <rect>
      <x>250</x>
@@ -72,7 +72,7 @@
     <string>Data Zwrotu</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="client">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -82,7 +82,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="book">
    <property name="geometry">
     <rect>
      <x>250</x>

@@ -57,7 +57,12 @@ QVariant RentalsTableModel::headerData(int section, Qt::Orientation orientation,
     return QVariant();
 }
 
-
+void RentalsTableModel::resetModel(){
+    beginResetModel();
+    datalist.clear();
+    datalist = db->setRentalList();
+    endResetModel();
+}
 
 void RentalsTableModel::addElement(){
 

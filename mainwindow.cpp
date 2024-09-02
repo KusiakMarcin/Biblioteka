@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QItemSelectionModel>
-
+#include <QMessageBox>
 
 #include <QDebug>
 
@@ -19,7 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->clientdelete,&QPushButton::clicked,this,&MainWindow::deleteClient);
     connect(ui->bookadd,&QPushButton::clicked,this,&MainWindow::addBookDialog);
     connect(ui->bookdelete,&QPushButton::clicked,this,&MainWindow::deleteBook);
-    connect(ui->rentaladd,&QPushButton::clicked,this,&MainWindow::addBookDialog);
+    connect(ui->rentaladd,&QPushButton::clicked,this,&MainWindow::addRentalDialog);
+    connect(ui->rentaldelete,&QPushButton::clicked,this,&MainWindow::deleteRental);
     setStatusBar(nullptr);
 
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
@@ -66,7 +67,7 @@ void MainWindow::setupRentalTable(){
     RentalTable->setSortingEnabled(true);
     RentalTable->resizeColumnsToContents();
     ui->rentalLayout->addWidget(RentalTable);
-    //connect(dialogBook,&addbookelement::dataSubmited,this,&MainWindow::resetBook);
+    connect(dialogRental,&CreateRental::dataSubmited,this,&MainWindow::resetRental);
 }
 
 
@@ -103,15 +104,25 @@ bool MainWindow::updateSelectedBook(const QModelIndex &current,const QModelIndex
 
 void MainWindow::deleteClient(){
     int ID = ui->clientDelete->text().toInt();
-    Db->removeClient(ID);
-    ClientModel->resetModel();
+    if(ID==0){QMessageBox::information(this,"Error","Incorrect input");}
+    else {Db->removeClient(ID);
+
+        ClientModel->resetModel();}
 
 }
 void MainWindow::deleteBook(){
     int ID = ui->bookDelete->text().toInt();
-    Db->removeBook(ID);
-    BookModel->resetModel();
+    if(ID==0){QMessageBox::information(this,"Error","Incorrect input");}
+    else {Db->removeBook(ID);
+        BookModel->resetModel();}
 
+}
+
+void MainWindow::deleteRental(){
+    int ID = ui->rentalDelete->text().toInt();
+    if(ID==0)QMessageBox::information(this,"Error","Incorrect input");
+    else {Db->removeRental(ID);
+        RentalModel->resetModel();}
 }
 
 
@@ -139,6 +150,10 @@ void MainWindow::resetClient(){
 void MainWindow::resetBook(){
 
     BookModel->resetModel();
+}
+
+void MainWindow::resetRental(){
+    RentalModel->resetModel();
 }
 
 
