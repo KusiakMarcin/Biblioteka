@@ -1,7 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QItemSelectionModel>
-#include <QMessageBox>
+
+
 #include <QDebug>
 
 
@@ -12,29 +13,47 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setupClientTable();
     setupBookTable();
-    connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
     isRentalTable();
-    connect(ui->clientdelete, &QPushButton::clicked, this, &MainWindow::removeClientDialog);
+    connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
+    connect(ui->clientedit,&QPushButton::clicked,this,&MainWindow::editClientDialog);
+    connect(ui->clientdelete,&QPushButton::clicked,this,&MainWindow::deleteClient);
+    connect(ui->bookadd,&QPushButton::clicked,this,&MainWindow::addBookDialog);
+    connect(ui->bookdelete,&QPushButton::clicked,this,&MainWindow::deleteBook);
+    connect(ui->rentaladd,&QPushButton::clicked,this,&MainWindow::addRentalDialog);
+    setStatusBar(nullptr);
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
 
 }
 
 
 void MainWindow::setupClientTable(){
-    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
-    proxyModel->setSourceModel(ClientModel);
-    ClientTable->setModel(proxyModel);
+
+    proxyModelClient->setSourceModel(ClientModel);
+    proxyModelClient->setFilterKeyColumn(-1);
+    proxyModelClient->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    connect(ui->clientSerach, &QLineEdit::textChanged,proxyModelClient,&QSortFilterProxyModel::setFilterFixedString);
+    ClientTable->setModel(proxyModelClient);
     ClientTable->setSortingEnabled(true);
     ClientTable->resizeColumnsToContents();
     ui->clientLayout->addWidget(ClientTable);
-    connect(ClientTable->selectionModel(),&QItemSelectionModel::currentChanged,this,&MainWindow::updateSelectedClient);
+
+    connect(dialogAddClient,&addclientelement::submitedClient,this,&MainWindow::resetClient);
+    connect(dialogEditClient,&editclient::clientEdited,this,&MainWindow::resetClient);
+
+
 }
 
 void MainWindow::setupBookTable(){
 
-    BooksTable->setModel(BookModel);
+    proxyModelBook->setSourceModel(BookModel);
+    proxyModelBook->setFilterKeyColumn(-1);
+    proxyModelBook->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    connect(ui->bookSearch, &QLineEdit::textChanged,proxyModelBook,&QSortFilterProxyModel::setFilterFixedString);
+    BooksTable->setModel(proxyModelBook);
+    BooksTable->setSortingEnabled(true);
+    BooksTable->resizeColumnsToContents();
     ui->bookLayout->addWidget(BooksTable);
-    connect(BooksTable->selectionModel(),&QItemSelectionModel::currentChanged,this,&MainWindow::updateSelectedBook);
+    connect(dialogBook,&addbookelement::dataSubmited,this,&MainWindow::resetBook);
 }
 
 int MainWindow::isRentalTable(){
@@ -43,8 +62,9 @@ int MainWindow::isRentalTable(){
     RentalTable->setModel(RentalModel);
     ui->rentalLayout->addWidget(RentalTable);
 
-
 }
+
+
 
 MainWindow::~MainWindow(){
     delete ui;
@@ -55,36 +75,16 @@ MainWindow::~MainWindow(){
     delete BooksTable;
     delete RentalModel;
     delete RentalTable;
-    delete dialogClient;
+    delete dialogAddClient;
     delete dialogBook;
 
 }
 
 bool MainWindow::updateSelectedClient(const QModelIndex &current,const QModelIndex &previous){
-
-    if (!current.isValid()) return false;
     SelectedClient = current;
     qDebug()<<SelectedClient;
-    /*int row = current.row();
-    SelectedClientData.ClientID = ClientModel->data(ClientModel->index(row, 0)).toInt();
-    SelectedClientData.Imie = ClientModel->data(ClientModel->index(row, 1)).toString();
-    SelectedClientData.Nazwisko = ClientModel->data(ClientModel->index(row, 2)).toString();
-    SelectedClientData.Adres = ClientModel->data(ClientModel->index(row, 3)).toString();
-    SelectedClientData.NumerTelefonu = ClientModel->data(ClientModel->index(row, 4)).toInt();
-    SelectedClientData.Email = ClientModel->data(ClientModel->index(row, 5)).toString();
-    qDebug() << "Selected Client ID:" << SelectedClientData.ClientID;*/
-    //if(SelectedClient!=previous)
-    int clientId = ClientModel->data(ClientModel->index(current.row(), 0)).toInt();
-    SelectedClientData.ClientID = clientId;
-    SelectedClientData.Imie = ClientModel->data(ClientModel->index(current.row(), 1)).toString();
-    SelectedClientData.Nazwisko = ClientModel->data(ClientModel->index(current.row(), 2)).toString();
-    SelectedClientData.Adres = ClientModel->data(ClientModel->index(current.row(), 3)).toString();
-    SelectedClientData.NumerTelefonu = ClientModel->data(ClientModel->index(current.row(), 4)).toInt();
-    SelectedClientData.Email = ClientModel->data(ClientModel->index(current.row(), 5)).toString();
-    qDebug() << "Selected Client ID:" << SelectedClientData.ClientID;
-    if (SelectedClient != previous) return true;
-    return false;
-    //    return true;
+    if(SelectedClient!=previous) return 1;
+    else return 0;
 
 }
 
@@ -96,22 +96,44 @@ bool MainWindow::updateSelectedBook(const QModelIndex &current,const QModelIndex
 
 }
 
-void MainWindow::addClientDialog(){
-    dialogClient->show();
+void MainWindow::deleteClient(){
+    qDebug()<<ClientModel->rowCount();
+    qDebug()<<"index:"<<SelectedClient.row();
+    int ID = ui->clientDelete->text().toInt();
+    qDebug()<<"ID:"<<ID;
+    Db->removeClient(ID);
+    ClientModel->resetModel();
+
+}
+void MainWindow::deleteBook(){
+    int ID = ui->bookDelete->text().toInt();
+    Db->removeBook(ID);
+    BookModel->resetModel();
 }
 
+
+void MainWindow::editClientDialog(){
+    ClientModel->findClient(ui->clientEdit->text().toInt());
+    dialogEditClient->show();
+}
+void MainWindow::addClientDialog(){
+    dialogAddClient->show();
+
+}
+void MainWindow::resetClient(){
+
+    ClientModel->resetModel();
+}
+
+void MainWindow::resetBook(){
+
+    BookModel->resetModel();
+}
 
 void MainWindow::addBookDialog(){
     dialogBook->show();
 }
 
-void MainWindow::removeClientDialog()
-{
-    if (!SelectedClient.isValid()) return;
-
-    RemoveClientElement dialog(this, SelectedClientData);
-    if (dialog.exec() == QDialog::Accepted && dialog.isConfirmed()) {
-        int row = SelectedClient.row();
-        ClientModel->deleteElement(row);
-    }
+void MainWindow::addRentalDialog(){
+    dialogAddRental->show();
 }

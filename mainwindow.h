@@ -4,11 +4,12 @@
 #include "Headers/BooksTableModel.h"
 #include "Headers/RentalsTableModel.h"
 #include "Headers/database.h"
+#include "createrental.h"
+#include "editclient.h"
 #include <QMainWindow>
 #include "QTableView"
 #include "addclientelement.h"
 #include "addbookelement.h"
-#include "removeclientelement.h"
 #include <QSortFilterProxyModel>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,24 +39,32 @@ private slots:
     bool updateSelectedClient(const QModelIndex &current,const QModelIndex &previous);
     bool updateSelectedBook(const QModelIndex &current,const QModelIndex &previous);
     void addClientDialog();
+    void addRentalDialog();
+    void editClientDialog();
+    void resetClient();
+    void resetBook();
+    void deleteClient();
+    void deleteBook();
     void addBookDialog();
-    void removeClientDialog();
 
 private:
     Ui::MainWindow *ui;
     database *Db = new database;                            //strumien do bazy danych
     ClientTableModel *ClientModel = new ClientTableModel(Db);
     QTableView *ClientTable = new QTableView(this);
-    addclientelement *dialogClient = new addclientelement(Db, this);
+    addclientelement *dialogAddClient = new addclientelement(Db, this);
+    editclient *dialogEditClient = new editclient(Db,this);
     addbookelement *dialogBook = new addbookelement(Db,this);
-    RemoveClientElement *dialogRemoveClient = new RemoveClientElement;
-    BooksTableModel *BookModel = new BooksTableModel;
+    CreateRental *dialogAddRental = new CreateRental(Db, this);
+    BooksTableModel *BookModel = new BooksTableModel(Db,this);
     QTableView *BooksTable = new QTableView(this);
     RentalsTableModel *RentalModel = new RentalsTableModel;
     QTableView *RentalTable = new QTableView(this);
     QModelIndex SelectedClient;
     QModelIndex SelectedBook;
     QModelIndex SelectedRental;
-    Clients SelectedClientData;
+    QSortFilterProxyModel *proxyModelClient = new QSortFilterProxyModel;
+    QSortFilterProxyModel *proxyModelBook = new QSortFilterProxyModel;
+    QSortFilterProxyModel *proxyModelRental = new QSortFilterProxyModel;
 };
 #endif // MAINWINDOW_H

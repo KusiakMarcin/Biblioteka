@@ -1,7 +1,6 @@
 #ifndef RENTALS_H
 #define RENTALS_H
 #include <iostream>
-#include "Books.h"
 
 
 class Rentals{
@@ -14,14 +13,14 @@ private:
 
 
 public:
-    Rentals();
+    //Rentals();
     //PopulateTable()
     //CreateElement()
     //DeleteElement()
     //CreateElementDB()
     //DeleteData()
 
-    ~Rentals();
+    //~Rentals();
 };
 
 #endif // RENTALS_H

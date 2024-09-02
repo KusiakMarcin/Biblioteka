@@ -1,25 +1,27 @@
 #include "Headers/ClientTableModel.h"
 #include "Headers/Clients.h"
-#include "Headers/database.h"
 #include <QDebug>
 
 
-ClientTableModel::ClientTableModel(database *Db, QObject *parent)
-    : QAbstractTableModel(parent)
+ClientTableModel::ClientTableModel(database *Db, QObject *parent)               //Model danych dla tabeli Klientów. Jako argument przyjmuję wskaźnik do obiektu database, który
+    : QAbstractTableModel(parent)                                               //komunikuje się z bazą danych.Drugi argument parent jest wskaźnikiem do rodzica.
 {
-    datalist = Db->setDataList();
+    datalist = Db->setDataClient();
+    Data = Db;
+
 }
 
-int ClientTableModel::rowCount(const QModelIndex &parent)const{
-
+int ClientTableModel::rowCount(const QModelIndex &parent)const{                 //Zwraca liczbe danych w modelu tabeli
+    if(parent.isValid()) return 0;
     return datalist.size();
 }
 
-int ClientTableModel::columnCount(const QModelIndex &parent)const{
+int ClientTableModel::columnCount(const QModelIndex &parent)const{              //Zwraca liczbe kolumn w modelu tabeli
+    if(parent.isValid())return 0;
     return 7;
 }
 
-QVariant ClientTableModel::data(const QModelIndex &index, int role)const{
+QVariant ClientTableModel::data(const QModelIndex &index, int role)const{       //
     if (!index.isValid() || role != Qt::DisplayRole)
         return QVariant();
     if (role == Qt::DisplayRole){
@@ -35,6 +37,22 @@ QVariant ClientTableModel::data(const QModelIndex &index, int role)const{
     }
 
     return QVariant();
+}
+
+Clients* ClientTableModel::findClient(int ID/*int left,int right*/){
+//    if(left<0||right>datalist.size())return nullptr;
+//    if(right==left)return nullptr;
+//    int pivot=left+(right-left)/2;
+//    if(pivot==left)pivot++;
+//    if(datalist[pivot].ClientID<ID)return findClient(ID,left,pivot);
+//    if(datalist[pivot].ClientID>ID)return findClient(ID,pivot,right);
+//    if(datalist[pivot].ClientID == ID)return &datalist[pivot];
+    for(int i=0;i<datalist.size();i++){
+        if(datalist[i].ClientID!=ID)continue;
+        else return &datalist[i];
+    }
+    return NULL;
+
 }
 QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
@@ -58,25 +76,16 @@ QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, 
     }
     return QVariant();
 }
+void ClientTableModel::resetModel() {
+    beginResetModel();
+    datalist.clear();
+    datalist = Data->setDataClient();
+    endResetModel();
 
-void ClientTableModel::deleteElement(int row) {
-    if (row < 0 || row >= datalist.size())
-        return;
-
-    beginRemoveRows(QModelIndex(), row, row);
-    Clients clientToDelete = datalist.at(row);
-    if (Db->removeClient(clientToDelete.ClientID)) {
-        datalist.removeAt(row);
-    } else {
-        qDebug() << "Failed to remove client with ID:" << clientToDelete.ClientID;
-    }
-
-    endRemoveRows();
 }
 
-//void ClientTableModel::addElement(Clients input){
 
-//bool insertRows(int row, int count, const QModelIndex &parent){
 
-//    return true;
-//}
+
+
+

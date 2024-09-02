@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>1300</x>
-      <y>370</y>
+      <y>360</y>
       <width>611</width>
       <height>571</height>
      </rect>
@@ -40,7 +40,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>530</y>
+      <y>520</y>
       <width>1231</width>
       <height>411</height>
      </rect>
@@ -63,10 +63,10 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>510</y>
-      <width>49</width>
-      <height>16</height>
+      <x>10</x>
+      <y>500</y>
+      <width>51</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -86,7 +86,7 @@
      <item>
       <widget class="QPushButton" name="clientadd">
        <property name="text">
-        <string>Dodaj Klienta</string>
+        <string>Dodaj Klietna</string>
        </property>
       </widget>
      </item>
@@ -110,7 +110,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>940</y>
+      <y>930</y>
       <width>631</width>
       <height>41</height>
      </rect>
@@ -156,7 +156,7 @@
     <property name="geometry">
      <rect>
       <x>1430</x>
-      <y>940</y>
+      <y>930</y>
       <width>481</width>
       <height>41</height>
      </rect>
@@ -191,7 +191,7 @@
       <x>1300</x>
       <y>30</y>
       <width>611</width>
-      <height>301</height>
+      <height>261</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="dataView"/>
@@ -220,6 +220,99 @@
     </property>
     <property name="text">
      <string>test</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="clientSerach">
+    <property name="geometry">
+     <rect>
+      <x>1130</x>
+      <y>0</y>
+      <width>113</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="bookDelete">
+    <property name="geometry">
+     <rect>
+      <x>352</x>
+      <y>970</y>
+      <width>71</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="bookEdit">
+    <property name="geometry">
+     <rect>
+      <x>572</x>
+      <y>970</y>
+      <width>71</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="clientDelete">
+    <property name="geometry">
+     <rect>
+      <x>352</x>
+      <y>480</y>
+      <width>71</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="clientEdit">
+    <property name="geometry">
+     <rect>
+      <x>572</x>
+      <y>480</y>
+      <width>71</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="rentalDelete">
+    <property name="geometry">
+     <rect>
+      <x>1690</x>
+      <y>970</y>
+      <width>61</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="rentalEdit">
+    <property name="geometry">
+     <rect>
+      <x>1860</x>
+      <y>970</y>
+      <width>51</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="bookSearch">
+    <property name="geometry">
+     <rect>
+      <x>1130</x>
+      <y>490</y>
+      <width>113</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="rentalSearch">
+    <property name="geometry">
+     <rect>
+      <x>1800</x>
+      <y>330</y>
+      <width>113</width>
+      <height>24</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -255,11 +348,15 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="IsCLientVisible">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="appointment-new"/>
+    <iconset theme="appointment-new">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Wyswietl</string>

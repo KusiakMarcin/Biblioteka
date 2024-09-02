@@ -14,10 +14,12 @@ public:
     explicit addclientelement(database *Db,QWidget *parent = nullptr);
     ~addclientelement();
 signals:
-    void submitInput(Clients input);
+    void submitedClient();
 
 private slots:
     void on_pushButton_dodajKlienta_2_clicked();
+
+    //void on_pushButton_dodajKlienta_2_clicked();
 
 private:
     Ui::addclientelement *ui;
