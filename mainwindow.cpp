@@ -17,10 +17,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->clientadd,&QPushButton::clicked,this,&MainWindow::addClientDialog);
     connect(ui->clientedit,&QPushButton::clicked,this,&MainWindow::editClientDialog);
     connect(ui->clientdelete,&QPushButton::clicked,this,&MainWindow::deleteClient);
+
     connect(ui->bookadd,&QPushButton::clicked,this,&MainWindow::addBookDialog);
+    connect(ui->bookedit,&QPushButton::clicked,this,&MainWindow::editBookDialog);
     connect(ui->bookdelete,&QPushButton::clicked,this,&MainWindow::deleteBook);
+
     connect(ui->rentaladd,&QPushButton::clicked,this,&MainWindow::addRentalDialog);
     connect(ui->rentaldelete,&QPushButton::clicked,this,&MainWindow::deleteRental);
+    connect(ui->rentaledit,&QPushButton::clicked,this,&MainWindow::editRentalDialog);
     setStatusBar(nullptr);
 
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
@@ -40,6 +44,7 @@ void MainWindow::setupClientTable(){
     ui->clientLayout->addWidget(ClientTable);
 
     connect(dialogAddClient,&addclientelement::submitedClient,this,&MainWindow::resetClient);
+    connect(dialogEditClient,&editclient::dataEdited,this,&MainWindow::resetClient);
 
 
 }
@@ -55,6 +60,7 @@ void MainWindow::setupBookTable(){
     BooksTable->resizeColumnsToContents();
     ui->bookLayout->addWidget(BooksTable);
     connect(dialogBook,&addbookelement::dataSubmited,this,&MainWindow::resetBook);
+    connect(dialogEditBook,&editbook::dataEdited,this,&MainWindow::resetBook);
 }
 
 void MainWindow::setupRentalTable(){
@@ -68,6 +74,8 @@ void MainWindow::setupRentalTable(){
     RentalTable->resizeColumnsToContents();
     ui->rentalLayout->addWidget(RentalTable);
     connect(dialogRental,&CreateRental::dataSubmited,this,&MainWindow::resetRental);
+    connect(dialogEditRental,&editrental::dataEdited,this,&MainWindow::resetRental);
+
 }
 
 
@@ -127,8 +135,32 @@ void MainWindow::deleteRental(){
 
 
 void MainWindow::editClientDialog(){
-    ClientModel->findClient(ui->clientEdit->text().toInt());
+    Clients client = ClientModel->findClient(ui->clientEdit->text().toInt());
+    if(client.ClientID!=0){
+    dialogEditClient->parseClient(client);
     dialogEditClient->show();
+    }
+    else{QMessageBox::information(this,"Error","No client with such ID");}
+
+
+}
+
+void MainWindow::editBookDialog(){
+    Books book = BookModel->findBook(ui->bookEdit->text().toInt());
+    if(book.BookID!=0){
+    dialogEditBook->parseBook(book);
+    dialogEditBook->show();
+    }
+    else{QMessageBox::information(this,"Error","No book with such ID");}
+}
+
+void MainWindow::editRentalDialog(){
+    Rentals rental = RentalModel->findRental(ui->rentalEdit->text().toInt());
+    if(rental.ID!=0){
+    dialogEditRental->parseRental(rental);
+    dialogEditRental->show();
+    }
+    else{QMessageBox::information(this,"Error","No rental with such ID");}
 }
 void MainWindow::addClientDialog(){
     dialogAddClient->show();

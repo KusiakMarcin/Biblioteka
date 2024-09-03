@@ -18,7 +18,9 @@ SOURCES += \
     addbookelement.cpp \
     addclientelement.cpp \
     createrental.cpp \
+    editbook.cpp \
     editclient.cpp \
+    editrental.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -37,14 +39,18 @@ HEADERS += \
     addbookelement.h \
     addclientelement.h \
     createrental.h \
+    editbook.h \
     editclient.h \
+    editrental.h \
     mainwindow.h
 
 FORMS += \
     addbookelement.ui \
     addclientelement.ui \
     createrental.ui \
+    editbook.ui \
     editclient.ui \
+    editrental.ui \
     mainwindow.ui
 
 # Default rules for deployment.

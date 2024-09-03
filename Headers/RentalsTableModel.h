@@ -11,6 +11,7 @@ class RentalsTableModel : public QAbstractTableModel{
     Q_OBJECT
     QVector<Rentals> datalist;
     database *db;
+
 public:
 
     RentalsTableModel(database *Db,QObject *parent = nullptr);
@@ -19,6 +20,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation,int role)const override;
     void resetModel();
+    Rentals findRental(int ID);
 public slots:
 
 

@@ -4,6 +4,10 @@
 #include <QDebug>
 #include <stdlib.h>
 
+QVector<QString> tables = {"Klienci", "Ksiazki","Wypozyczenia"};
+QVector<QString> clients={"id","imie","nazwisko","adres","nr_telefonu","email","nr_karty"};
+QVector<QString> books = {"id","tytul","autorzy_id","liczba_egzemplarzy","rok_wydania","gatunek_id","liczba_wypozyczen"};
+QVector<QString> rentals= {"id","klienci_id","ksiazki_id","data_zwrotu","data_wydania"};
 
 
 database::database() {
@@ -117,6 +121,7 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
 
 
     rc = sqlite3_step(stmt);
+    qDebug() <<rc;
     if (rc != SQLITE_DONE) {
         qDebug() << "Failed to execute statement: %s\n" <<sqlite3_errmsg(this->Db);
         sqlite3_finalize(stmt);
@@ -193,13 +198,68 @@ bool database::addRental(int clientID,int bookID,QDate borrowDate, QDate returnD
     return true;
 }
 
-bool database::editClient(const int id,const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email){
+bool database::editElement(int id,const int table, const int column,const QString value){
     sqlite3_stmt* stmt;
-    const char* sql = "UPDATE klienci SET imie=\"?\", nazwisko=\"?\", adres=\"?\", nr_telefonu=\"?\", email=\"?\" WHERE id =?";
-    int rc = sqlite3_prepare_v2(Db,sql,-1,&stmt,NULL);
-    qDebug()<<rc;
+    qDebug()<<id<<table<<column<<value;
+    QString sql = "UPDATE  SET  = ? WHERE id =?;";
+    switch(table){
+        case 0: sql.insert(12,clients[column]);
+        break;
+        case 1: sql.insert(12,books[column]);
+        break;
+        case 2: sql.insert(12,rentals[column]);
+        break;
+    }
+
+
+    sql.insert(7,tables[table]);
+    const char* querry = sql.toUtf8();
+    qDebug()<< querry;
+    int rc = sqlite3_prepare_v2(Db,querry,-1,&stmt,NULL);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(Db));
+        qDebug()<<sqlite3_errmsg(Db);
+        return false;
+    }
+    else{
+        fprintf(stdout,"statement prepared");
+        qDebug()<<"ok";
+
+    }
+    sqlite3_bind_text(stmt,1,value.toUtf8().constData(),value.length(),SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,2,id);
+
+
+    rc = sqlite3_step(stmt);
+    qDebug()<<sqlite3_errmsg(Db)<<rc;
+    if (rc != SQLITE_DONE) {
+        qDebug() << "Failed to execute statement: %s\n" <<sqlite3_errmsg(this->Db);
+        sqlite3_finalize(stmt);
+        return false;
+    }
+    return true;
+}
+
+bool database::editElement(int id,const int table, const int column,int value){
+    sqlite3_stmt* stmt;
+    QString sql = "UPDATE  SET  = ? WHERE id =?;";
+    switch(table){
+    case 0: sql.insert(12,clients[column]);
+        break;
+    case 1: sql.insert(12,books[column]);
+        break;
+    case 2: sql.insert(12,rentals[column]);
+        break;
+    }
+
+    sql.insert(7,tables[table]);
+    const char* querry = sql.toUtf8();
+    qDebug()<<querry;
+    int rc = sqlite3_prepare_v2(Db,querry,-1,&stmt,NULL);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(Db));
+        qDebug()<<sqlite3_errmsg(Db);
         return false;
     }
     else{
@@ -207,15 +267,13 @@ bool database::editClient(const int id,const QString& imie, const QString& nazwi
 
     }
 
-    sqlite3_bind_text(stmt, 1, imie.toUtf8().constData(), imie.length(), SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, nazwisko.toUtf8().constData(), nazwisko.length(), SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, adres.toUtf8().constData(),adres.length(), SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt, 4, nrtel);
-    sqlite3_bind_text(stmt, 5, email.toUtf8().constData(), email.length(), SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt,6,id);
+    sqlite3_bind_int(stmt,1,value);
+    sqlite3_bind_int(stmt,2,id);
+
 
 
     rc = sqlite3_step(stmt);
+    qDebug()<<sqlite3_errmsg(Db)<<rc;
     if (rc != SQLITE_DONE) {
         qDebug() << "Failed to execute statement: %s\n" <<sqlite3_errmsg(this->Db);
         sqlite3_finalize(stmt);
@@ -316,7 +374,7 @@ bool database::removeBook(int BookID){
     }
 
     sqlite3_bind_int(stmtRemoveClient, 1, BookID);
-
+    qDebug()<<sqlite3_errmsg(Db);
     if (sqlite3_step(stmtRemoveClient) != SQLITE_DONE) {
         qDebug() << "Failed to execute delete statement:" << sqlite3_errmsg(Db);
         sqlite3_finalize(stmtRemoveClient);

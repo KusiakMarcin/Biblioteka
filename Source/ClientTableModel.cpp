@@ -39,7 +39,7 @@ QVariant ClientTableModel::data(const QModelIndex &index, int role)const{       
     return QVariant();
 }
 
-Clients* ClientTableModel::findClient(int ID/*int left,int right*/){
+Clients ClientTableModel::findClient(int ID/*int left,int right*/){
 //    if(left<0||right>datalist.size())return nullptr;
 //    if(right==left)return nullptr;
 //    int pivot=left+(right-left)/2;
@@ -47,11 +47,12 @@ Clients* ClientTableModel::findClient(int ID/*int left,int right*/){
 //    if(datalist[pivot].ClientID<ID)return findClient(ID,left,pivot);
 //    if(datalist[pivot].ClientID>ID)return findClient(ID,pivot,right);
 //    if(datalist[pivot].ClientID == ID)return &datalist[pivot];
+    Clients tmp;
     for(int i=0;i<datalist.size();i++){
         if(datalist[i].ClientID!=ID)continue;
-        else return &datalist[i];
+        else return datalist[i];
     }
-    return NULL;
+    return Clients();
 
 }
 QVariant ClientTableModel::headerData(int section, Qt::Orientation orientation, int role) const

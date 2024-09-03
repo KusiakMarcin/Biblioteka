@@ -15,7 +15,8 @@ class editclient : public QDialog
 
 public:
     explicit editclient(database *Db,QWidget *parent = nullptr);
-    void parseID(int id);
+    void parseClient(Clients client);
+    void editElement();
     ~editclient();
 
 signals:
@@ -27,7 +28,7 @@ public slots:
 private:
     Ui::editclient *ui;
     database *Db;
-    int ID;
+    Clients data;
 
 };
 

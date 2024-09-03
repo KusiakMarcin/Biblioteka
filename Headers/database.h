@@ -7,7 +7,11 @@
 #include "Headers/Books.h"
 #include "Headers/Rentals.h"
 
-
+struct initializer
+{
+    int valueInt;
+    QString valueString;
+};
 
 class database{
 private:
@@ -22,8 +26,8 @@ public:
     bool addNewClient(const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
     bool addNewBook(const QString& tytul, int rokWydania , int liczbaEgzemplarzy, int autor, int gatunek);
     bool addRental(int clientID,int bookID,QDate borrowDate, QDate returnDate);
-
-    bool editClient(const int id,const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
+    bool editElement(const int id,const int table, const int column, const QString value);
+    bool editElement(const int id,const int table, const int column, int vaule);
     QVector<Clients> setDataClient();
     bool removeBook(int BookID);
     bool removeClient(int ClientID);

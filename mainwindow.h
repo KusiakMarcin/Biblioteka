@@ -5,6 +5,8 @@
 #include "Headers/RentalsTableModel.h"
 #include "Headers/database.h"
 #include "editclient.h"
+#include "editbook.h"
+#include "editrental.h"
 #include <QMainWindow>
 #include "QTableView"
 #include "addclientelement.h"
@@ -31,17 +33,13 @@ public:
 public slots:
 
 
-
-    //int addClientTable();
-    //int addBooksTable();
-
-private slots:
-
     bool updateSelectedClient(const QModelIndex &current,const QModelIndex &previous);
     bool updateSelectedBook(const QModelIndex &current,const QModelIndex &previous);
     void addClientDialog();
     void addRentalDialog();
     void editClientDialog();
+    void editBookDialog();
+    void editRentalDialog();
     void resetClient();
     void resetBook();
     void resetRental();
@@ -49,6 +47,9 @@ private slots:
     void deleteBook();
     void deleteRental();
     void addBookDialog();
+
+
+
 
 private:
     Ui::MainWindow *ui;
@@ -63,6 +64,8 @@ private:
     addbookelement *dialogBook = new addbookelement(Db,this);
     CreateRental *dialogRental = new CreateRental(Db,this);
     editclient *dialogEditClient = new editclient(Db,this);
+    editbook *dialogEditBook = new editbook(Db,this);
+    editrental *dialogEditRental = new editrental(Db,this);
 
 
 

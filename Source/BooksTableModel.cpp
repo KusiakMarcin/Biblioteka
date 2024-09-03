@@ -58,6 +58,14 @@ QVariant BooksTableModel::headerData(int section, Qt::Orientation orientation, i
     }
     return QVariant();
 }
+
+Books BooksTableModel::findBook(int ID){
+    for(int i=0;i<datalist.size();i++){
+        if(datalist[i].BookID!=ID)continue;
+        else return datalist[i];
+    }
+    return Books();
+}
 void BooksTableModel::resetModel() {
     beginResetModel();
     datalist.clear();

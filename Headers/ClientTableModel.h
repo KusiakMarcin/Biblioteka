@@ -31,7 +31,7 @@ public:
 
 
 public slots:
-    Clients* findClient(int ID/*int left,int right*/);
+    Clients findClient(int ID/*int left,int right*/);
 
 //    void deleteElement();
 signals:
