@@ -85,6 +85,9 @@ void ClientTableModel::resetModel() {
 
 }
 
+void ClientTableModel::runCheck(int ID){
+    emit returnClient(findClient(ID).ClientID!=0);
+}
 
 
 

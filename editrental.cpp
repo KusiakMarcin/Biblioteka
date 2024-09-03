@@ -1,5 +1,6 @@
 #include "editrental.h"
 #include "ui_editrental.h"
+#include <QMessageBox>
 
 editrental::editrental(database * Db ,QWidget *parent) :
     QDialog(parent),
@@ -20,24 +21,36 @@ void editrental::parseRental(Rentals rental){
 }
 
 void editrental::editElement(){
+
+    int flagDate=0;
+    if(ui->borrowDate->date()>=ui->returnDate->date()){ flagDate=1; QMessageBox::information(this ,"Error","Incorrect input, borrowed dated cant be later than return date");}
     if(ui->clientID->text().toInt()!=data.clientID){
+        emit parseClientID(ui->clientID->text().toInt());
+        if(clientExists){
         data.clientID = ui->clientID->text().toInt();
-        Db->editElement(data.ID,2,1,data.clientID);
+            Db->editElement(data.ID,2,1,data.clientID);}
+        else{QMessageBox::information(this ,"Error","Incorrect input, no such client");}
     }
     if(ui->bookID->text().toInt()!=data.bookID){
+        if(bookExists){
         data.bookID = ui->bookID->text().toInt();
-        Db->editElement(data.ID,2,2,data.bookID);
+            Db->editElement(data.ID,2,2,data.bookID);}
+        else{QMessageBox::information(this ,"Error","Incorrect input, no such book");}
     }
-    if(ui->borrowDate->date()!=data.borrowedDay){
+    if(ui->borrowDate->date()!=data.borrowedDay&&flagDate!=1){
         data.borrowedDay = ui->borrowDate->date();
         Db->editElement(data.ID,2,4,data.borrowedDay.toString("yyyy-MM-dd").toUtf8().constData());
     }
-    if(ui->returnDate->date()!=data.returnDay){
+    if(ui->returnDate->date()!=data.returnDay&&flagDate!=1){
         data.returnDay = ui->returnDate->date();
         Db->editElement(data.ID,2,3,data.returnDay.toString("yyyy-MM-dd").toUtf8().constData());
     }
 
     emit dataEdited();
+
+}
+bool editrental::ifClientExists(bool ifExists){
+    clientExists = ifExists;
 }
 editrental::~editrental()
 {

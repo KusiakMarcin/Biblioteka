@@ -27,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->rentaledit,&QPushButton::clicked,this,&MainWindow::editRentalDialog);
     setStatusBar(nullptr);
 
+    connect(dialogEditRental,&editrental::parseClientID,ClientModel,&ClientTableModel::runCheck);
+    connect(ClientModel,&ClientTableModel::returnClient,dialogEditRental,&editrental::ifClientExists);
+
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
 
 }
@@ -45,6 +48,7 @@ void MainWindow::setupClientTable(){
 
     connect(dialogAddClient,&addclientelement::submitedClient,this,&MainWindow::resetClient);
     connect(dialogEditClient,&editclient::dataEdited,this,&MainWindow::resetClient);
+
 
 
 }

@@ -32,9 +32,10 @@ public:
 
 public slots:
     Clients findClient(int ID/*int left,int right*/);
-
+    void runCheck(int ID);
 //    void deleteElement();
 signals:
+    void returnClient(bool ifExists);
     void dataUpdated();
 };
 

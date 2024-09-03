@@ -11,6 +11,7 @@ QVector<QString> rentals= {"id","klienci_id","ksiazki_id","data_zwrotu","data_wy
 
 
 database::database() {
+
     initDatabase();
 }
 
@@ -36,6 +37,7 @@ bool database::initDatabase(){
     else{
         fprintf(stderr, "Opened database succesfully\n");
     }
+
 
         const char *sqlCreateTables =
             "CREATE TABLE IF NOT EXISTS \"Klienci\" ("
