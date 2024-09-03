@@ -21,9 +21,15 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation,int role)const override;
     void resetModel();
-    Books findBook(int ID);
-public slots:
 
+public slots:
+    Books findBook(int ID);
+    void runCheck(int ID);
+    void stockCheck(int ID);
+
+signals:
+    void returnBook(bool ifExists);
+    void stockEmpty(bool isEmpty);
 
 };
 

@@ -24,11 +24,12 @@ signals:
     void dataEdited();
     void parseClientID(int ID);
     void parseBookID(int ID);
+    void stockCheck(int ID);
 
 public slots:
-    //bool ifBookExists(bool ifExists);
+    bool ifBookExists(bool ifExists);
     bool ifClientExists(bool ifExists);
-
+    bool stockChecked(bool isEmpty);
 
 private:
     Ui::editrental *ui;
@@ -36,6 +37,7 @@ private:
     Rentals data;
     bool clientExists = true;
     bool bookExists = true;
+    bool stockEmpty = false;
 };
 
 #endif // EDITRENTAL_H

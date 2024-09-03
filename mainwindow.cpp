@@ -30,6 +30,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(dialogEditRental,&editrental::parseClientID,ClientModel,&ClientTableModel::runCheck);
     connect(ClientModel,&ClientTableModel::returnClient,dialogEditRental,&editrental::ifClientExists);
 
+    connect(dialogEditRental,&editrental::parseBookID,BookModel,&BooksTableModel::runCheck);
+    connect(BookModel,&BooksTableModel::returnBook,dialogEditRental,&editrental::ifBookExists);
+    connect(dialogEditRental,&editrental::stockCheck,BookModel,&BooksTableModel::stockCheck);
+    connect(BookModel,&BooksTableModel::stockEmpty,dialogEditRental,&editrental::stockChecked);
+
+    connect(dialogRental,&CreateRental::parseBookID,BookModel,&BooksTableModel::runCheck);
+    connect(BookModel,&BooksTableModel::returnBook,dialogRental,&CreateRental::ifBookExists);
+    connect(dialogRental,&CreateRental::parseClientID,ClientModel,&ClientTableModel::runCheck);
+    connect(ClientModel,&ClientTableModel::returnClient,dialogRental,&CreateRental::ifClientExists);
+    connect(dialogRental,&CreateRental::stockCheck,BookModel,&BooksTableModel::stockCheck);
+    connect(BookModel,&BooksTableModel::stockEmpty,dialogRental,&CreateRental::stockChecked);
+
     //connect(ClientTable->selectionModel(),&QItemSelectionModel::selectionChanged)
 
 }
@@ -65,6 +77,8 @@ void MainWindow::setupBookTable(){
     ui->bookLayout->addWidget(BooksTable);
     connect(dialogBook,&addbookelement::dataSubmited,this,&MainWindow::resetBook);
     connect(dialogEditBook,&editbook::dataEdited,this,&MainWindow::resetBook);
+    connect(dialogEditRental,&editrental::dataEdited,this,&MainWindow::resetBook);
+    connect(dialogRental,&CreateRental::dataSubmited,this,&MainWindow::resetBook);
 }
 
 void MainWindow::setupRentalTable(){
@@ -134,7 +148,8 @@ void MainWindow::deleteRental(){
     int ID = ui->rentalDelete->text().toInt();
     if(ID==0)QMessageBox::information(this,"Error","Incorrect input");
     else {Db->removeRental(ID);
-        RentalModel->resetModel();}
+        RentalModel->resetModel();
+        BookModel->resetModel();}
 }
 
 

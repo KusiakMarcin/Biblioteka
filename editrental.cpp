@@ -32,10 +32,16 @@ void editrental::editElement(){
         else{QMessageBox::information(this ,"Error","Incorrect input, no such client");}
     }
     if(ui->bookID->text().toInt()!=data.bookID){
-        if(bookExists){
+        emit parseBookID(ui->bookID->text().toInt());
+        emit stockCheck(ui->bookID->text().toInt());
+        if(bookExists&&!stockEmpty){
         data.bookID = ui->bookID->text().toInt();
-            Db->editElement(data.ID,2,2,data.bookID);}
-        else{QMessageBox::information(this ,"Error","Incorrect input, no such book");}
+        Db->editElement(data.ID,2,2,data.bookID);
+        }
+        else{
+            if(!bookExists)QMessageBox::information(this ,"Error","Incorrect input, no such book");
+            if(stockEmpty)QMessageBox::information(this ,"Error","Incorrect input, Stock is empty");
+        }
     }
     if(ui->borrowDate->date()!=data.borrowedDay&&flagDate!=1){
         data.borrowedDay = ui->borrowDate->date();
@@ -52,7 +58,16 @@ void editrental::editElement(){
 bool editrental::ifClientExists(bool ifExists){
     clientExists = ifExists;
 }
+
+bool editrental::ifBookExists(bool ifExists){
+    bookExists = ifExists;
+}
+bool editrental::stockChecked(bool isEmpty){
+    stockEmpty = isEmpty;
+}
+
 editrental::~editrental()
 {
     delete ui;
 }
+

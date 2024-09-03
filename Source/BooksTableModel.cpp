@@ -74,4 +74,20 @@ void BooksTableModel::resetModel() {
 
 }
 
+void BooksTableModel::runCheck(int ID){
+    emit returnBook(findBook(ID).BookID != 0);
+    qDebug()<<(findBook(ID).BookID != 0);
+}
 
+void BooksTableModel::stockCheck(int ID){
+    Books tmp = findBook(ID);
+    if(tmp.BookID!=0){
+        qDebug()<<tmp.Stock<<"stock-numberrented"<<tmp.NumberRented;
+        if(tmp.Stock<=tmp.NumberRented){
+            emit stockEmpty(true);
+        }
+        else emit stockEmpty(false);
+
+    }
+
+}

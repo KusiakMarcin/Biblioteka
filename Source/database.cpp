@@ -21,7 +21,7 @@ database::~database() {
     }
 }
 
-bool database::initDatabase(){
+bool database::initDatabase(){          //incjalizuje połączenie z bazą danych, jeśli baza nie istnieje tworzy nowa baze (patrz sqlCreateTables)
 
 
 
@@ -61,7 +61,7 @@ bool database::initDatabase(){
             "LENGTH(nr_karty) = 6"
             "));"
 
-            "CREATE TABLE IF NOT EXISTS \"Wypożyczenia\" ("
+            "CREATE TABLE IF NOT EXISTS \"Wypozyczenia\" ("
             "\"id\" INTEGER NOT NULL,"
             "\"klienci_id\" INTEGER NOT NULL,"
             "\"ksiazki_id\" INTEGER NOT NULL,"
@@ -86,7 +86,25 @@ bool database::initDatabase(){
             "\"liczba_wypozyczen\" INTEGER,"
             "FOREIGN KEY(\"autorzy\") REFERENCES \"Autorzy\"(\"id\"),"
             "FOREIGN KEY(\"gatunek\") REFERENCES \"Gatunki\"(\"id\"),"
-            "PRIMARY KEY(\"id\" AUTOINCREMENT));";
+            "PRIMARY KEY(\"id\" AUTOINCREMENT));"
+            "CREATE TRIGGER \"increment_rented\""
+            "AFTER INSERT ON Wypozyczenia"
+            "FOR EACH ROW"
+            "BEGIN"
+            "IF (SELECT COUNT(*) FROM Wypozyczenia WHERE klienci_id = NEW.klienci_id) = 1 THEN"
+            "UPDATE users"
+            "SET reference_count = reference_count + 1"
+            "WHERE user_id = NEW.user_id;"
+            "END IF;"
+            "END;"
+            "CREATE TRIGGER decrement_liczba_wypozyczen"
+            "AFTER DELETE ON Wypozyczenia"
+            "FOR EACH ROW"
+            "BEGIN"
+            "UPDATE Ksiazki"
+            "SET liczba_wypozyczen = liczba_wypozyczen - 1"
+            "WHERE id = OLD.ksiazka_id;"
+            "END;";
 
      rc = sqlite3_exec(Db, sqlCreateTables, 0, 0, &zErrMsg);
         if (rc != SQLITE_OK) {
@@ -337,7 +355,7 @@ QVector<Books> database::setDataBook(){
         sqlite3_step(getGenre);
         tmp.Genre = (char*)sqlite3_column_text(getGenre,1);
 
-        tmp.NumberRented = sqlite3_column_int(getGenre,6);
+        tmp.NumberRented = sqlite3_column_int(stmt,6);
 
 
 

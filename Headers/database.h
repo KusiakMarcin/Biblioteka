@@ -36,7 +36,7 @@ public:
     QVector<Rentals> setRentalList();
     QVector<QString> setDataAuthor();
     QVector<QString> setDataGenre();
-   // QVector<Books> setDataBooks();
+
 
 
 };
