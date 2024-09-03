@@ -153,7 +153,7 @@ bool database::addNewClient(const QString& imie, const QString& nazwisko, const 
     return true;
 }
 
-bool database::addNewBook(const QString& tytul, int rokWydania , int liczbaEgzemplarzy, int autor, int gatunek) {
+bool database::addNewBook(const QString& tytul, int rokWydania , int liczbaEgzemplarzy, const QString& autor, const QString& gatunek) {
     sqlite3_stmt* stmt;
     const char* sql = "INSERT INTO Ksiazki (id, tytul, autorzy_id, liczba_egzemplarzy, rok_wydania, gatunek_id, liczba_wypozyczen) VALUES (NULL, ?, ?, ?, ?, ?,0);";
 
@@ -167,10 +167,10 @@ bool database::addNewBook(const QString& tytul, int rokWydania , int liczbaEgzem
 
     }
     sqlite3_bind_text(stmt, 1, tytul.toUtf8().constData(), tytul.length(), SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt, 2, autor);
+    sqlite3_bind_text(stmt, 2, autor.toUtf8().constData(), tytul.length(), SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 3, liczbaEgzemplarzy);
     sqlite3_bind_int(stmt, 4, rokWydania);
-    sqlite3_bind_int(stmt, 5, gatunek);
+    sqlite3_bind_text(stmt, 5, gatunek.toUtf8().constData(), tytul.length(), SQLITE_TRANSIENT);
 
 
 
@@ -329,11 +329,7 @@ QVector<Clients> database::setDataClient(){
 QVector<Books> database::setDataBook(){
     QVector<Books> datalist;
     const char* sql = "SELECT * FROM Ksiazki;";
-    const char* sqlAuthor = "SELECT * FROM Autorzy WHERE id=?";
-    const char* sqlGenre = "SELECT * FROM Gatunki WHERE id=?";
     sqlite3_stmt* stmt;
-    sqlite3_stmt* getAuthor;
-    sqlite3_stmt* getGenre;
     int rc = sqlite3_prepare_v2(Db,sql,-1,&stmt,NULL);
 
     if (rc != SQLITE_OK) {
@@ -341,20 +337,12 @@ QVector<Books> database::setDataBook(){
     }
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW){
         Books tmp;
-        sqlite3_prepare_v2(Db,sqlAuthor,-1,&getAuthor,NULL);
-        sqlite3_prepare_v2(Db,sqlGenre,-1,&getGenre,NULL);
         tmp.BookID = sqlite3_column_int(stmt,0);
         tmp.Title = (char*)sqlite3_column_text(stmt,1);
-        sqlite3_bind_int(getAuthor,1,sqlite3_column_int(stmt,2));
-        sqlite3_step(getAuthor);
-        tmp.Author = (char*)sqlite3_column_text(getAuthor,1);
-
+        tmp.Author = (char*)sqlite3_column_text(stmt,2);
         tmp.Stock = sqlite3_column_int(stmt,3);
         tmp.RokWydania = sqlite3_column_int(stmt,4);
-        sqlite3_bind_int(getGenre,1,sqlite3_column_int(stmt,5));
-        sqlite3_step(getGenre);
-        tmp.Genre = (char*)sqlite3_column_text(getGenre,1);
-
+        tmp.Genre = (char*)sqlite3_column_text(stmt,5);
         tmp.NumberRented = sqlite3_column_int(stmt,6);
 
 

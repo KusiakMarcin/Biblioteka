@@ -10,8 +10,6 @@ editbook::editbook(database *Db, QWidget *parent) :
     authorModel = new comboBox(AUTHOR,Db);
     genreModel = new comboBox(GENRE,Db);
     ui->setupUi(this);
-    ui->author->setModel(authorModel);
-    ui->genre->setModel(genreModel);
     connect(ui->pushButton,&QPushButton::clicked,this,&editbook::editElement);
 }
 void editbook::editElement(){
@@ -27,13 +25,13 @@ void editbook::editElement(){
         data.Stock= ui->stock->text().toInt();
         Db->editElement(data.BookID,1,3,ui->stock->text().toInt());
     }
-    if(ui->author->currentText()!=data.Author){
-        data.Author=ui->author->currentText();
-        Db->editElement(data.BookID,1,2,ui->author->currentIndex()+1);
+    if(ui->author->text()!=data.Author){
+        data.Author=ui->author->text();
+        Db->editElement(data.BookID,1,2,ui->author->text());
     }
-    if(ui->genre->currentText()!=data.Genre){
-        data.Genre=ui->genre->currentText();
-        Db->editElement(data.BookID,1,5,ui->genre->currentIndex()+1);
+    if(ui->genre->text()!=data.Genre){
+        data.Genre=ui->genre->text();
+        Db->editElement(data.BookID,1,5,ui->genre->text());
     }
     emit dataEdited();
 }
@@ -42,8 +40,8 @@ void editbook::parseBook(Books book){
     ui->title->setText(book.Title);
     ui->release->setText(QString().setNum(book.RokWydania));
     ui->stock->setText(QString().setNum(book.Stock));
-    ui->author->setCurrentText(book.Author);
-    ui->genre->setCurrentText(book.Genre);
+    ui->author->setText(book.Author);
+    ui->genre->setText(book.Genre);
 
 }
 

@@ -24,7 +24,7 @@ public:
     ~database();
     bool initDatabase();
     bool addNewClient(const QString& imie, const QString& nazwisko, const QString& adres, int nrtel, const QString& email);
-    bool addNewBook(const QString& tytul, int rokWydania , int liczbaEgzemplarzy, int autor, int gatunek);
+    bool addNewBook(const QString& tytul, int rokWydania , int liczbaEgzemplarzy, const QString& autor, const QString& gatunek);
     bool addRental(int clientID,int bookID,QDate borrowDate, QDate returnDate);
     bool editElement(const int id,const int table, const int column, const QString value);
     bool editElement(const int id,const int table, const int column, int vaule);

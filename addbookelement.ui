@@ -134,7 +134,7 @@
     <string>Anuluj</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="authorBox">
+  <widget class="QLineEdit" name="author">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -144,7 +144,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="genreBox">
+  <widget class="QLineEdit" name="genre">
    <property name="geometry">
     <rect>
      <x>140</x>

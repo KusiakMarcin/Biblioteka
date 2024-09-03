@@ -11,20 +11,18 @@ addbookelement::addbookelement(database* Db,QWidget *parent) :
     authorModel = new comboBox(AUTHOR,db);
     genreModel = new comboBox(GENRE,db);
     ui->setupUi(this);
-    ui->authorBox->setModel(authorModel);
-    ui->genreBox->setModel(genreModel);
     connect(ui->pushButton,&QPushButton::clicked,this,&addbookelement::addElement);
 
 }
 
 void addbookelement::addElement(){
     const QString title = ui->editTitle->text();
-    int AuthorID = ui->authorBox->currentIndex()+1;
-    int genreID = ui->genreBox->currentIndex()+1;
+    const QString Author = ui->author->text();
+    const QString genre = ui->genre->text();
     int release = ui->editRelease->text().toInt();
     int stock = ui->editStock->text().toInt();
 
-    if(db->addNewBook(title,release,stock,AuthorID,genreID)){
+    if(db->addNewBook(title,release,stock,Author,genre)){
         emit dataSubmited();
         QMessageBox::information(this, "Information", "Record inserted successfully.");
     }else{
