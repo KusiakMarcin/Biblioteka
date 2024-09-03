@@ -87,3 +87,19 @@ void RentalsTableModel::addElement(){
 void RentalsTableModel::deleteElement(){
 
 }
+
+bool RentalsTableModel::hasRentals(int ID){
+    for(int i=0;i<datalist.size();i++){
+        if(datalist[i].clientID!=ID)continue;
+        else return true;
+    }
+    return false;
+}
+
+bool RentalsTableModel::isRented(int ID){
+    for(int i=0;i<datalist.size();i++){
+        if(datalist[i].bookID!=ID)continue;
+        else return true;
+    }
+    return false;
+}

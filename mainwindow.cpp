@@ -131,35 +131,50 @@ bool MainWindow::updateSelectedBook(const QModelIndex &current,const QModelIndex
 void MainWindow::deleteClient(){
     int ID = ui->clientDelete->text().toInt();
     if(ID==0){QMessageBox::information(this,"Error","Incorrect input");}
-    else {Db->removeClient(ID);
+    else {
+        if(RentalModel->hasRentals(ID)){QMessageBox::information(this,"Error","client has rentals, can't delete client");}
+        else{
+        Db->removeClient(ID);
 
         ClientModel->resetModel();}
 
+    }
 }
 void MainWindow::deleteBook(){
     int ID = ui->bookDelete->text().toInt();
-    if(ID==0){QMessageBox::information(this,"Error","Incorrect input");}
-    else {Db->removeBook(ID);
+    if(ID==0){
+        QMessageBox::information(this,"Error","Incorrect input");
+    }
+    else {
+        if(RentalModel->isRented(ID)){QMessageBox::information(this,"Error","book has been rented, can't delete book");}
+        else{
+        Db->removeBook(ID);
         BookModel->resetModel();}
-
+    }
 }
 
 void MainWindow::deleteRental(){
     int ID = ui->rentalDelete->text().toInt();
-    if(ID==0)QMessageBox::information(this,"Error","Incorrect input");
-    else {Db->removeRental(ID);
+    if(ID==0){QMessageBox::information(this,"Error","Incorrect input");
+    }
+    else {
+
+        Db->removeRental(ID);
         RentalModel->resetModel();
-        BookModel->resetModel();}
+        BookModel->resetModel();
+        }
 }
 
 
 void MainWindow::editClientDialog(){
     Clients client = ClientModel->findClient(ui->clientEdit->text().toInt());
-    if(client.ClientID!=0){
+    if(client.ClientID!=0&&RentalModel->hasRentals(client.ClientID)){
     dialogEditClient->parseClient(client);
     dialogEditClient->show();
     }
-    else{QMessageBox::information(this,"Error","No client with such ID");}
+    else{
+    QMessageBox::information(this,"Error","No client with such ID");
+    }
 
 
 }

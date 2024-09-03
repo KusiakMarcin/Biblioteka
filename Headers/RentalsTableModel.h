@@ -21,6 +21,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation,int role)const override;
     void resetModel();
     Rentals findRental(int ID);
+    bool hasRentals(int ID);
+    bool isRented(int ID);
 public slots:
 
 
